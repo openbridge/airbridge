@@ -1,0 +1,178 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Outputs:
+  AirbyteAccessKeyId:
+    Description: Airbyte IAM User Access Key ID
+    Value:
+      Ref: AirbyteAccessKey
+  AirbyteSecretAccessKey:
+    Description: Airbyte IAM User Secret Access Key
+    Value:
+      Fn::GetAtt:
+      - AirbyteAccessKey
+      - SecretAccessKey
+  S3BucketName:
+    Description: Name of the created S3 bucket
+    Value:
+      Ref: AirbyteS3Bucket
+Parameters:
+  GlueDatabaseName:
+    AllowedPattern: ^[a-zA-Z0-9_\-]+$
+    ConstraintDescription: The database name can only contain alphanumeric characters,
+      underscores, and hyphens.
+    Default: openbridge
+    Description: The name of the AWS Glue database.
+    Type: String
+Resources:
+  AirbyteAccessKey:
+    Properties:
+      UserName:
+        Ref: AirbyteUser
+    Type: AWS::IAM::AccessKey
+  AirbyteS3Bucket:
+    DeletionPolicy: Retain
+    Properties:
+      BucketName:
+        Fn::Sub: openbridge-${AWS::AccountId}-${AWS::Region}-${AWS::StackName}
+    Type: AWS::S3::Bucket
+  AirbyteUser:
+    Type: AWS::IAM::User
+  AirbyteUserPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:GetObject
+          - s3:DeleteObject
+          - s3:ListBucket
+          - s3:PutObject
+          - s3:PutObjectAcl
+          - s3:ListBucketMultipartUploads
+          - s3:AbortMultipartUpload
+          - s3:GetBucketLocation
+          Effect: Allow
+          Resource:
+          - Fn::Sub: arn:aws:s3:::${AirbyteS3Bucket}/*
+          - Fn::Sub: arn:aws:s3:::${AirbyteS3Bucket}
+        - Action:
+          - glue:*
+          - s3:GetBucketLocation
+          - s3:ListBucket
+          - s3:ListAllMyBuckets
+          - s3:GetBucketAcl
+          - ec2:DescribeVpcEndpoints
+          - ec2:DescribeRouteTables
+          - ec2:CreateNetworkInterface
+          - ec2:DeleteNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DescribeSecurityGroups
+          - ec2:DescribeSubnets
+          - ec2:DescribeVpcAttribute
+          - iam:ListRolePolicies
+          - iam:GetRole
+          - iam:GetRolePolicy
+          - cloudwatch:PutMetricData
+          Effect: Allow
+          Resource:
+          - '*'
+        - Action:
+          - s3:CreateBucket
+          - s3:PutBucketPublicAccessBlock
+          Effect: Allow
+          Resource:
+          - arn:aws:s3:::aws-glue-*
+        - Action:
+          - s3:GetObject
+          - s3:PutObject
+          - s3:DeleteObject
+          Effect: Allow
+          Resource:
+          - arn:aws:s3:::aws-glue-*/*
+          - arn:aws:s3:::*/*aws-glue-*/*
+        - Action:
+          - s3:GetObject
+          Effect: Allow
+          Resource:
+          - arn:aws:s3:::crawler-public*
+          - arn:aws:s3:::aws-glue-*
+        - Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          - logs:AssociateKmsKey
+          Effect: Allow
+          Resource:
+          - arn:aws:logs:*:*:log-group:/aws-glue/*
+        - Action:
+          - ec2:CreateTags
+          - ec2:DeleteTags
+          Condition:
+            ForAllValues:StringEquals:
+              aws:TagKeys:
+              - aws-glue-service-resource
+          Effect: Allow
+          Resource:
+          - arn:aws:ec2:*:*:network-interface/*
+          - arn:aws:ec2:*:*:security-group/*
+          - arn:aws:ec2:*:*:instance/*
+        Version: '2012-10-17'
+      PolicyName: AirbyteUserAccessPolicy
+      Users:
+      - Ref: AirbyteUser
+    Type: AWS::IAM::Policy
+  AthenaQueryResultsBucket:
+    Properties:
+      BucketName:
+        Fn::Sub: ${AWS::StackName}-athena-query-results
+    Type: AWS::S3::Bucket
+  AthenaWorkgroup:
+    Properties:
+      Description: Workgroup created by CloudFormation template for Amazon Athena.
+      Name:
+        Fn::Sub: ${AWS::StackName}-athena-workgroup
+      State: ENABLED
+      WorkGroupConfiguration:
+        ResultConfiguration:
+          OutputLocation:
+            Fn::Sub: s3://${AthenaQueryResultsBucket}/
+    Type: AWS::Athena::WorkGroup
+  GlueDatabase:
+    Properties:
+      CatalogId:
+        Ref: AWS::AccountId
+      DatabaseInput:
+        Description: Database created by CloudFormation template for AWS Glue.
+        Name:
+          Ref: GlueDatabaseName
+        Parameters:
+          athenaQueryResultLocation:
+            Fn::Sub: s3://${AthenaQueryResultsBucket}/
+          classification: csv
+          compressionType: none
+          targetTableName: sample
+          targetTableSchema: public
+          typeOfData: file
+    Type: AWS::Glue::Database
+  S3BucketCrossAccountPolicy:
+    Properties:
+      Bucket:
+        Ref: AirbyteS3Bucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:GetObject
+          - s3:DeleteObject
+          - s3:ListBucket
+          - s3:PutObject
+          - s3:PutObjectAcl
+          - s3:ListBucketMultipartUploads
+          - s3:AbortMultipartUpload
+          - s3:GetBucketLocation
+          Effect: Allow
+          Principal:
+            AWS:
+            - Fn::Sub: arn:aws:iam::${AWS::AccountId}:user/${AirbyteUser}
+          Resource:
+          - Fn::Sub: arn:aws:s3:::${AirbyteS3Bucket}/*
+          - Fn::Sub: arn:aws:s3:::${AirbyteS3Bucket}
+        Version: '2012-10-17'
+    Type: AWS::S3::BucketPolicy

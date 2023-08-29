@@ -1,0 +1,10 @@
+{
+    "is_sandbox": "optional_value",
+    "auth_type": "optional_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "start_date": "optional_value",
+    "force_use_bulk_api": "optional_value",
+    "streams_criteria": "optional_value"
+}

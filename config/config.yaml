@@ -1,0 +1,9 @@
+airbyte-dst-image: placeholder-dst-image
+airbyte-src-image: placeholder-src-image
+catalog-loc: path/to/catalog
+dst-config-loc: path/to/dst/config
+job: placeholder-job-id
+output-path: path/to/output
+runtime-configs: path/to/runtime/configs
+src-config-loc: path/to/src/config
+state-file-path: path/to/state/file

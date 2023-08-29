@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  AirbyteS3Bucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub "openbridge-${AWS::AccountId}-${AWS::Region}-${AWS::StackName}"
+  S3BucketCrossAccountPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref AirbyteS3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:DeleteObject
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:ListBucketMultipartUploads
+              - s3:AbortMultipartUpload
+              - s3:GetBucketLocation
+            Resource:
+              - !Sub "arn:aws:s3:::${AirbyteS3Bucket}/*"
+              - !Sub "arn:aws:s3:::${AirbyteS3Bucket}"
+            Principal:
+              AWS:
+                - !Sub "arn:aws:iam::${AWS::AccountId}:user/${AirbyteUser}"
+  AirbyteUser:
+    Type: "AWS::IAM::User"
+  AirbyteUserPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: AirbyteUserAccessPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:DeleteObject
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:ListBucketMultipartUploads
+              - s3:AbortMultipartUpload
+              - s3:GetBucketLocation
+            Resource:
+              - !Sub "arn:aws:s3:::${AirbyteS3Bucket}/*"
+              - !Sub "arn:aws:s3:::${AirbyteS3Bucket}"
+      Users:
+        - !Ref AirbyteUser
+  AirbyteAccessKey:
+    Type: "AWS::IAM::AccessKey"
+    Properties:
+      UserName: !Ref AirbyteUser
+Outputs:
+  AirbyteAccessKeyId:
+    Description: Airbyte IAM User Access Key ID
+    Value: !Ref AirbyteAccessKey
+  AirbyteSecretAccessKey:
+    Description: Airbyte IAM User Secret Access Key
+    Value: !GetAtt AirbyteAccessKey.SecretAccessKey
+  S3BucketName:
+    Description: Name of the created S3 bucket
+    Value: !Ref AirbyteS3Bucket
