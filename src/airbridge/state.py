@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-This script handles the initialization and output of Airbyte state.
-"""
+"""This script handles the initialization and output of Airbyte state."""
 
-import argparse
-import base64
 import hashlib
 import json
 import logging
@@ -18,9 +14,8 @@ from datetime import datetime
 # FileUtility
 # ==========================
 class FileUtility:
-    """
-    Utility class for handling file operations such as reading, writing, and calculating file hash.
-    """
+    """Utility class for handling file operations such as reading, writing, and
+    calculating file hash."""
 
     @staticmethod
     def read_file(file_path: str) -> str:
@@ -81,7 +76,15 @@ class FileUtility:
 class StateExtractor:
     @staticmethod
     def extract_state_from_data(data, test_state=None):
-        """Extract state from a list of JSON strings."""
+        """Extract state from a list of JSON strings.
+
+        Args:
+            data (list or dict): List of JSON strings or a single JSON object.
+            test_state (dict, optional): Test state to return for unit testing purposes.
+
+        Returns:
+            dict: Extracted state from the provided data.
+        """
         final_state = {}
 
         if isinstance(data, dict):
@@ -92,9 +95,9 @@ class StateExtractor:
                     obj = json.loads(line)
 
                     if "state" in obj:
-                        stream_name = obj["state"]["stream"]["stream_descriptor"][
-                            "name"
-                        ]
+                        stream_name = obj["state"]["stream"][
+                            "stream_descriptor"
+                        ]["name"]
                         stream_data = obj["state"]["data"].get(stream_name, {})
 
                         if not stream_data:
@@ -107,12 +110,12 @@ class StateExtractor:
                 except json.JSONDecodeError as exc:
                     raise Exception(f"Error decoding JSON: {line}") from exc
 
+
         return final_state if test_state is None else test_state
 
     @staticmethod
     def save_state_to_file(final_state, filename):
-        """
-        Save the given state to a JSON file.
+        """Save the given state to a JSON file.
 
         Args:
             final_state (dict): State to be saved.
@@ -128,15 +131,14 @@ class StateExtractor:
             dir_structure = os.path.dirname(filename)
             if not os.path.exists(dir_structure):
                 os.makedirs(dir_structure)
-                logging.info(f"Created directory: {dir_structure}")
+                logging.info("Created directory: %s", dir_structure)
             state_file_path = os.path.join(dir_structure, "state.json")
             with open(state_file_path, "w", encoding="utf-8") as outfile:
                 json.dump(final_state, outfile, indent=2)
             return state_file_path
         except IOError as exc:
-            raise Exception(
-                f"Error writing to the state file at {state_file_path}."
-            ) from exc
+            raise Exception(f"Error writing to the state file at {state_file_path}") from exc
+
 
 
 # ==========================
@@ -145,14 +147,12 @@ class StateExtractor:
 
 
 class ManifestUtility:
-    """
-    Utility class for generating and saving manifest content.
-    """
+    """Utility class for generating and saving manifest content."""
 
     @staticmethod
     def _extract_epoch_from_path(path):
-        """
-        Extracts the directory name (epoch value) just before the filename in a given path.
+        """Extracts the directory name (epoch value) just before the filename
+        in a given path.
 
         Args:
             path (str): The path from which to extract the epoch value.
@@ -168,11 +168,11 @@ class ManifestUtility:
     def generate_manifest_content(
         state_file_path, key_value, airbyte_src_image, job_id, data_file_path
     ):
-        """
-        Generate manifest content with error handling.
-        """
+        """Generate manifest content with error handling."""
         try:
-            src_runtime = ManifestUtility._extract_epoch_from_path(state_file_path)
+            src_runtime = ManifestUtility._extract_epoch_from_path(
+                state_file_path
+            )
             manifest_content = {
                 key_value: [
                     {
@@ -189,11 +189,14 @@ class ManifestUtility:
             return manifest_content
         except Exception as exc:
             logging.error(f"Error generating manifest content: {str(exc)}")
-            raise Exception(f"Error generating manifest content: {str(exc)}") from exc
+            raise Exception(
+                f"Error generating manifest content: {str(exc)}"
+            ) from exc
 
     @staticmethod
     def save_manifest_content(manifest_content: dict) -> None:
-        """Saves the provided manifest content into the manifest file, merging with existing content if present."""
+        """Saves the provided manifest content into the manifest file, merging
+        with existing content if present."""
 
         manifest_dir = os.getcwd()
 
@@ -215,11 +218,13 @@ class ManifestUtility:
                         existing_manifest_content = json.loads(file_content)
                     else:
                         logging.warning(
-                            f"Manifest file {manifest_file_path} is empty. Initializing with an empty dictionary."
+                            "Manifest file %s is empty. Initializing with an empty dictionary.",
+                            manifest_file_path,
                         )
             else:
                 logging.info(
-                    f"Manifest file {manifest_file_path} not found. A new one will be created."
+                    "Manifest file %s not found. A new one will be created.",
+                    manifest_file_path,
                 )
 
             # Merge new manifest content with existing content
@@ -229,20 +234,27 @@ class ManifestUtility:
             # Save merged manifest content
             with open(manifest_file_path, "w", encoding="utf-8") as manifest_file:
                 json.dump(existing_manifest_content, manifest_file, indent=2)
-                logging.info(f"Manifest content saved to {manifest_file_path}")
+                logging.info("Manifest content saved to %s", manifest_file_path)
 
         except json.JSONDecodeError:
             logging.error(
-                f"Error decoding JSON from the manifest file {manifest_file_path}."
+                "Error decoding JSON from the manifest file %s.",
+                manifest_file_path,
             )
             raise
         except PermissionError:
             logging.error(
-                f"Permission denied when trying to access the directory {manifest_dir} or file {manifest_file_path}."
+                "Permission denied when trying to access the directory %s or file %s.",
+                manifest_dir,
+                manifest_file_path,
             )
             raise
         except IOError as exc:
-            logging.error(f"Error writing to the manifest file {manifest_file_path}.")
+            logging.error(
+                "Error writing to the manifest file %s. Details: %s",
+                manifest_file_path,
+                exc,
+            )
             raise
 
 
@@ -252,9 +264,8 @@ class ManifestUtility:
 
 
 class AirbyteStateHandler:
-    """
-    Handler for processing Airbyte state files and generating manifest content.
-    """
+    """Handler for processing Airbyte state files and generating manifest
+    content."""
 
     def __init__(
         self,
@@ -269,13 +280,18 @@ class AirbyteStateHandler:
         self.output_path = output_path
         self.airbyte_src_image = airbyte_src_image
         self.job_id = job_id
-        self.src_runtime = src_runtime  # Storing src_runtime for use in the class
+        self.src_runtime = (
+            src_runtime  # Storing src_runtime for use in the class
+        )
         self.config_hash = config_hash
         # Preprocess the airbyte_src_image to replace underscores and slashes with dashes
-        self.airbyte_src_image = airbyte_src_image.replace("_", "-").replace("/", "-")
+        self.airbyte_src_image = airbyte_src_image.replace("_", "-").replace(
+            "/", "-"
+        )
 
         logging.info(
-            "Initialized AirbyteStateHandler with output_path: %s", self.output_path
+            "Initialized AirbyteStateHandler with output_path: %s",
+            self.output_path,
         )
 
     def process_data_file(self, filename):
@@ -289,7 +305,9 @@ class AirbyteStateHandler:
             with open(filename, "r", encoding="utf-8") as file:
                 data = file.readlines()
             final_state = StateExtractor.extract_state_from_data(data)
-            state_file_path = StateExtractor.save_state_to_file(final_state, filename)
+            state_file_path = StateExtractor.save_state_to_file(
+                final_state, filename
+            )
             logging.info("Saved state to: %s", state_file_path)
 
             key_value = self._get_key_value()
@@ -310,7 +328,9 @@ class AirbyteStateHandler:
 
             return final_state
         except Exception as error:
-            logging.error("Error processing data file %s: %s", filename, str(error))
+            logging.error(
+                "Error processing data file %s: %s", filename, str(error)
+            )
             raise
 
     def _extract_state_from_file(self, filename):
@@ -320,7 +340,9 @@ class AirbyteStateHandler:
                 data = file.readlines()
             return StateExtractor.extract_state_from_data(data)
         except Exception as error:
-            logging.error("Error processing data file %s: %s", filename, str(error))
+            logging.error(
+                "Error processing data file %s: %s", filename, str(error)
+            )
             raise
 
     def _save_final_state(self, final_state, filename):
@@ -337,7 +359,7 @@ class AirbyteStateHandler:
         search_path = self.output_path
         logging.info("Starting traversal from search path: %s", search_path)
 
-        data_pattern = re.compile(f"data_{self.src_runtime}\.json")
+        data_pattern = re.compile(rf"data_{self.src_runtime}\.json")
         data_found = False  # Variable to track if data file(s) was/were found
 
         try:
@@ -357,7 +379,7 @@ class AirbyteStateHandler:
 
             if not data_found:
                 logging.warning(
-                    "No files matching the pattern 'data_\\d+.json' were found in the provided search path."
+                    "No matching 'data_\\d+.json' files found."
                 )
         except Exception as error:
             logging.error(
@@ -386,8 +408,8 @@ def parse_arguments(
 def process_airbyte_state(
     src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=None
 ):
-    """
-    Process the Airbyte state given the input path, Airbyte source image, and an optional job ID.
+    """Process the Airbyte state given the input path, Airbyte source image,
+    and an optional job ID.
 
     Args:
         input_path (str): Path to the directory containing data.json.
@@ -405,7 +427,9 @@ def process_airbyte_state(
     handler.traverse_and_process()
 
 
-def main(src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=None):
+def main(
+    src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=None
+):
     """Main execution function."""
     args = {
         "src_runtime": src_runtime,
@@ -415,7 +439,3 @@ def main(src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=No
         "config_hash": config_hash,
     }
     process_airbyte_state(**args)
-
-
-if __name__ == "__main__":
-    main()

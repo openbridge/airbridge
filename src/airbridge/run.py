@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-"""
-This script handles the initialization and execution of Airbyte. It manages the necessary
-operations such as parsing arguments, managing Docker containers, and coordinating Airbyte processes.
+"""This script handles the initialization and execution of Airbyte.
+
+It manages the necessary operations such as parsing arguments, managing Docker
+containers, and coordinating Airbyte processes.
 """
 
 # Standard library imports
@@ -13,7 +14,6 @@ import logging
 import math
 import os
 import re
-import subprocess
 import sys
 import time
 import uuid
@@ -24,12 +24,8 @@ from datetime import datetime
 import docker
 from filelock import FileLock, Timeout
 
-from state import (
-    main as state_main,
-    AirbyteStateHandler,
-    process_airbyte_state,
-    parse_arguments,
-)
+from state import main as state_main
+
 
 # Constants
 RUNTIME = "docker"  # Default runtime environment
@@ -51,8 +47,7 @@ logging.basicConfig(
 
 
 def src_config_md5(file_path: str) -> str:
-    """
-    Compute the MD5 hash of a given file.
+    """Compute the MD5 hash of a given file.
 
     Args:
         file_path (str): Path to the file.
@@ -68,8 +63,7 @@ def src_config_md5(file_path: str) -> str:
 
 
 class LockManager:
-    """
-    A manager class for acquiring and releasing file-based locks.
+    """A manager class for acquiring and releasing file-based locks.
 
     Attributes:
         lock_path (str): Path to the lock file.
@@ -83,8 +77,8 @@ class LockManager:
     """
 
     def __init__(self, lock_path=None):
-        """
-        Initializes the LockManager with the provided lock path or the default path.
+        """Initializes the LockManager with the provided lock path or the
+        default path.
 
         Args:
             lock_path (str, optional): Path to the lock file. Defaults to the default lock file path.
@@ -94,10 +88,10 @@ class LockManager:
         self._file_lock = FileLock(self.lock_path, timeout=DEFAULT_TIMEOUT)
 
     def _get_default_lock_file_path(self) -> str:
-        """
-        Returns the default lock file path based on the location of this script.
+        """Returns the default lock file path based on the location of this
+        script.
 
-        Returns:
+        Returns:doc
             str: Path to the default lock file.
         """
         return os.path.join(
@@ -141,14 +135,16 @@ class LockManager:
             self._file_lock.release()
             self._has_lock = False
         except Exception:
-            logger.exception("Error occurred while trying to release the lock.")
+            logger.exception(
+                "Error occurred while trying to release the lock."
+            )
             raise
 
 
 class ConfigManager:
     def __init__(self, default_config=None, config_file=None, cmd_args=None):
-        """
-        Initialize the ConfigManager with default configuration, a configuration file, and/or command line arguments.
+        """Initialize the ConfigManager with default configuration, a
+        configuration file, and/or command line arguments.
 
         Args:
             default_config (dict, optional): Default configuration values. Defaults to None.
@@ -165,8 +161,7 @@ class ConfigManager:
             self.update_from_args(cmd_args)
 
     def _load_config_from_file(self, config_path: str) -> None:
-        """
-        Load configurations from a file.
+        """Load configurations from a file.
 
         Args:
             config_path (str): Path to the configuration file.
@@ -191,8 +186,7 @@ class ConfigManager:
             )
 
     def update_from_args(self, cmd_args: argparse.Namespace) -> None:
-        """
-        Update configurations from command line arguments.
+        """Update configurations from command line arguments.
 
         Args:
             cmd_args (argparse.Namespace): Command line arguments.
@@ -201,12 +195,11 @@ class ConfigManager:
 
 
 class StateHandler:
-    """
-    A handler class for managing the execution of state scripts.
+    """A handler class for managing the execution of state scripts.
 
-    This class provides methods to run a state script, either once or periodically,
-    and to execute additional functionalities related to the state management
-    and interaction with the Airbyte source image.
+    This class provides methods to run a state script, either once or
+    periodically, and to execute additional functionalities related to the
+    state management and interaction with the Airbyte source image.
     """
 
     def __init__(
@@ -216,8 +209,7 @@ class StateHandler:
         source_config_hash: str = None,
         job_id: str = None,
     ):
-        """
-        Initialize the StateHandler.
+        """Initialize the StateHandler.
 
         Args:
             output_path (str): Path for output.
@@ -232,8 +224,7 @@ class StateHandler:
         self.source_config_hash = source_config_hash
 
     def run_state_script(self) -> bool:
-        """
-        Execute the state script.
+        """Execute the state script.
 
         Returns:
             bool: True if the script executed successfully, False otherwise.
@@ -265,10 +256,7 @@ class StateHandler:
 
 
 class AirbyteDockerHandler:
-    """
-    Manages the execution of the state script for Airbyte operations.
-
-    """
+    """Manages the execution of the state script for Airbyte operations."""
 
     def __init__(
         self,
@@ -278,8 +266,7 @@ class AirbyteDockerHandler:
         dst_image: str = None,
         src_runtime=None,
     ):
-        """
-        Initialize the AirbyteDockerHandler.
+        """Initialize the AirbyteDockerHandler.
 
         Args:
             configuration (dict, optional): A dictionary containing configuration settings. Defaults to None.
@@ -296,8 +283,13 @@ class AirbyteDockerHandler:
         self.job_id = self.configuration.get("job")
         self.src_runtime = src_runtime
 
+        self.client = docker.from_env()  # Initialize the Docker client
+        self.active_containers = []  # Initialize the active_containers attribute
+
         self.logger.info(
-            "Source Image: %s, Destination Image: %s", self.src_image, self.dst_image
+            "Source Image: %s, Destination Image: %s",
+            self.src_image,
+            self.dst_image,
         )
 
         if self.output_path:
@@ -306,21 +298,18 @@ class AirbyteDockerHandler:
             except PermissionError:
                 raise ValueError(
                     f"Permission denied when attempting to create the directory '{self.output_path}'."
-                )
+                ) from None  # We might not want to chain this with the original exception
             except Exception as e:
                 raise ValueError(
                     f"An error occurred while creating the directory '{self.output_path}': {e}"
-                )
+                ) from e  # Explicitly chaining with the original exception
 
-        self.client = self._initialize_docker_client()
-        self.active_containers = []
 
     # Airbyte-specific methods
     @staticmethod
     def sanitize_container_name(name: str) -> str:
-        """
-        Sanitize a container name to meet Docker's naming criteria.
-        Replace any character not in [a-zA-Z0-9_.-] with an underscore.
+        """Sanitize a container name to meet Docker's naming criteria. Replace
+        any character not in [a-zA-Z0-9_.-] with an underscore.
 
         Args:
             name (str): The initial container name.
@@ -331,8 +320,8 @@ class AirbyteDockerHandler:
         return re.sub(r"[^a-zA-Z0-9_.-]", "_", name)
 
     def load_config_from_file(self, config_path: str) -> None:
-        """
-        Load configuration from a given file path and update the current configuration.
+        """Load configuration from a given file path and update the current
+        configuration.
 
         Args:
             config_path (str): Path to the configuration file.
@@ -345,34 +334,37 @@ class AirbyteDockerHandler:
             with open(config_path, "r", encoding="utf-8") as file:
                 self.configuration.update(json.load(file))
         except (FileNotFoundError, json.JSONDecodeError, Exception) as e:
-            self.logger.error(f"Error loading configuration from {config_path}: {e}")
+            self.logger.error(
+                f"Error loading configuration from {config_path}: {e}"
+            )
 
     def load_config_from_args(self, config_args) -> None:
-        """
-        Load configuration data from argparse arguments and update the instance's configuration.
+        """Load configuration data from argparse arguments and update the
+        instance's configuration.
 
         Args:
             config_args: Argument parser object containing the command-line arguments.
         """
         args_dict = vars(config_args)
-        filtered_args = {k: v for k, v in args_dict.items() if not k.startswith("_")}
+        filtered_args = {
+            k: v for k, v in args_dict.items() if not k.startswith("_")
+        }
         self.configuration.update(filtered_args)
 
     def create_check_command(self) -> str:
-        """
-        Create a check command for Airbyte.
+        """Create a check command for Airbyte.
 
         Returns:
             str: The check command string.
         """
         return "check --config /secrets/config.json"
-    
+
     # Docker helper methods
-    
+
     def _initialize_docker_client(self) -> docker.DockerClient:
-        """
-        Initialize a Docker client. First, it tries to use environment variables.
-        If that fails, it falls back to using the Docker socket directly.
+        """Initialize a Docker client. First, it tries to use environment
+        variables. If that fails, it falls back to using the Docker socket
+        directly.
 
         Returns:
             docker.DockerClient: Docker client instance.
@@ -383,10 +375,9 @@ class AirbyteDockerHandler:
             return client
         except docker.errors.DockerException:
             return docker.DockerClient(base_url="unix://var/run/docker.sock")
-    
+
     def check_docker_availability(self) -> bool:
-        """
-        Check if Docker is available and can be pinged.
+        """Check if Docker is available and can be pinged.
 
         Returns:
             bool: True if Docker is available, False otherwise.
@@ -398,9 +389,15 @@ class AirbyteDockerHandler:
             self.logger.exception("Docker not available.")
             return False
 
+    def check_image_provided(self, image, image_type: str):
+        """Check if the given image is provided."""
+        if not image:
+            self.logger.error(f"{image_type} image is not provided.")
+            return False
+        return True
+
     def cleanup_container(self, container_name: str) -> bool:
-        """
-        Clean up and remove a specified Docker container.
+        """Clean up and remove a specified Docker container.
 
         Args:
             container_name (str): Name of the Docker container.
@@ -419,17 +416,22 @@ class AirbyteDockerHandler:
             return True
         except docker.errors.APIError as api_err:
             self.logger.error(
-                "API error cleaning up container %s: %s", container_name, api_err
+                "API error cleaning up container %s: %s",
+                container_name,
+                api_err,
             )
             return False
         except Exception as general_error:
             self.logger.exception(
-                "Error cleaning up container %s: %s", container_name, general_error
+                "Error cleaning up container %s: %s",
+                container_name,
+                general_error,
             )
             return False
-        
+
     def _common_volumes(self, mode: str, output_file_path: str = None) -> dict:
-        """Generate common volume bindings based on the mode (source or destination) and output path."""
+        """Generate common volume bindings based on the mode (source or
+        destination) and output path."""
         volumes = {
             output_file_path: {"bind": "/tmp/", "mode": "rw"},
             self.configuration["catalog_loc"]: {
@@ -453,8 +455,7 @@ class AirbyteDockerHandler:
         return src_volumes, dst_volumes
 
     def _prepare_src_volumes(self, output_file_path: str) -> dict:
-        """
-        Prepare source volumes including the state file if present.
+        """Prepare source volumes including the state file if present.
 
         Args:
             output_file_path (str): Path for the output file.
@@ -469,7 +470,9 @@ class AirbyteDockerHandler:
             self.logger.info(f"A state file was passed: {state_file_path}")
 
             if not os.path.exists(state_file_path):
-                with open(state_file_path, "w", encoding="utf-8") as state_file:
+                with open(
+                    state_file_path, "w", encoding="utf-8"
+                ) as state_file:
                     state_file.write("{}")  # Create an empty state file
 
             volumes[state_file_path] = {"bind": "/state.json", "mode": "rw"}
@@ -477,8 +480,7 @@ class AirbyteDockerHandler:
         return volumes
 
     def _prepare_dst_volumes(self, output_file_path: str) -> dict:
-        """
-        Prepare destination volumes.
+        """Prepare destination volumes.
 
         Args:
             output_file_path (str): Path for the output file.
@@ -487,10 +489,9 @@ class AirbyteDockerHandler:
             dict: Dictionary containing volume bindings for the destination.
         """
         return self._common_volumes("dst", output_file_path)
-    
+
     def pull_docker_image(self, image_name: str) -> None:
-        """
-        Pull the specified Docker image.
+        """Pull the specified Docker image.
 
         Args:
             image_name (str): Name of the Docker image to be pulled.
@@ -500,7 +501,9 @@ class AirbyteDockerHandler:
         """
         try:
             self.client.images.pull(image_name)
-            self.logger.info("Successfully pulled Docker image %s.", image_name)
+            self.logger.info(
+                "Successfully pulled Docker image %s.", image_name
+            )
         except docker.errors.ImageNotFound as exc:
             self.logger.error("Docker image %s not found.", image_name)
             raise DockerImageNotFoundError(
@@ -513,10 +516,9 @@ class AirbyteDockerHandler:
             raise Exception(
                 f"Error while pulling Docker image {image_name}. Error: {str(exc)}"
             ) from exc
-    
+
     def run_image_check(self, image: str, volumes: dict) -> None:
-        """
-        Run a configuration check on the provided Docker image.
+        """Run a configuration check on the provided Docker image.
 
         Args:
             image (str): Docker image name.
@@ -554,8 +556,7 @@ class AirbyteDockerHandler:
     def _run_container_with_entrypoint(
         self, image: str, entrypoint: str, volumes: dict, container_name: str
     ) -> None:
-        """
-        Run a Docker container with the specified entrypoint.
+        """Run a Docker container with the specified entrypoint.
 
         Args:
             image (str): Docker image name.
@@ -577,7 +578,9 @@ class AirbyteDockerHandler:
             )
         except docker.errors.ContainerError as exc:
             self.logger.exception(
-                "Error running Docker image %s with entrypoint %s", image, entrypoint
+                "Error running Docker image %s with entrypoint %s",
+                image,
+                entrypoint,
             )
             raise ContainerExecutionError(
                 f"Error running Docker image {image} with entrypoint {entrypoint}."
@@ -593,10 +596,9 @@ class AirbyteDockerHandler:
             ) from exc
 
     def execute(
-    self, src_airbyte_image: str = None, dst_airbyte_image: str = None
+        self, src_airbyte_image: str = None, dst_airbyte_image: str = None
     ) -> bool:
-        """
-        Execute the Airbyte Docker images for source and destination.
+        """Execute the Airbyte Docker images for source and destination.
 
         Args:
             src_airbyte_image (str, optional): Source Airbyte Docker image. Uses class attribute if not provided.
@@ -606,59 +608,82 @@ class AirbyteDockerHandler:
             bool: True if successful, False otherwise.
         """
         src_airbyte_image = src_airbyte_image or self.src_image
-        if not src_airbyte_image:
-            self.logger.error("Source image is not provided.")
+        if not self.check_image_provided(src_airbyte_image, "Source"):
+            return False
+
+        dst_airbyte_image = dst_airbyte_image or self.dst_image
+        if not self.check_image_provided(dst_airbyte_image, "Destination"):
             return False
 
         run_time = math.ceil(time.time())
         output_file_path = os.path.join(
-            self.output_path, src_airbyte_image.replace("/", "-"), str(run_time)
+            self.output_path,
+            src_airbyte_image.replace("/", "-"),
+            str(run_time),
         )
         data_file = f"data_{self.src_runtime}.json"
 
-        # Helper to construct commands
-        def construct_command(base_cmd: str, extra: str = "") -> str:
-            return f'bash -c "{base_cmd} {extra}"'
+        # Helper to construct source command
+        def construct_src_command() -> str:
+            command_base = "$AIRBYTE_ENTRYPOINT read --config /secrets/config.json --catalog /secrets/catalog.json"
+            src_state_arg = (
+                "--state /state.json"
+                if self.configuration.get("state_file_path")
+                else ""
+            )
+            return f'bash -c "{command_base} {src_state_arg} | tee /tmp/{data_file}"'
 
-        def process_image(image, mode):
+        # Helper to construct destination command
+        def construct_dst_command() -> str:
+            command_base = "$AIRBYTE_ENTRYPOINT write --config /secrets/config.json --catalog /secrets/catalog.json"
+            return f'bash -c "cat /tmp/{data_file} | {command_base}"'
+
+        def process_src_image(image):
             try:
                 self.pull_docker_image(image)
-                volumes = self._prepare_src_volumes(output_file_path) if mode == "src" else self._prepare_dst_volumes(output_file_path)
+                volumes = self._prepare_src_volumes(output_file_path)
                 self.run_image_check(image, volumes)
-
-                command_base = f"$AIRBYTE_ENTRYPOINT {'read' if mode == 'src' else 'write'} --config /secrets/config.json --catalog /secrets/catalog.json"
-                
-                # Ensure the source uses the state argument conditionally
-                src_state_arg = "--state /state.json" if mode == "src" and self.configuration.get("state_file_path") else ""
-                extra_arg = (
-                    f"{src_state_arg} | tee /tmp/{data_file}" if mode == "src" else f"cat /tmp/{data_file}"
-                )
-                full_command = construct_command(command_base, extra_arg)
-
+                full_command = construct_src_command()
                 container_name = f"{image.replace('/', '-')}_{uuid.uuid4()}"
                 self._run_container_with_entrypoint(
                     image, full_command, volumes, container_name
                 )
             except Exception as e:
-                self.logger.error(f"Error processing {mode} image {image}: {str(e)}")
+                self.logger.error(
+                    f"Error processing source image {image}: {str(e)}"
+                )
+                return False
+            return True
+
+        def process_dst_image(image):
+            try:
+                self.pull_docker_image(image)
+                volumes = self._prepare_dst_volumes(output_file_path)
+                self.run_image_check(image, volumes)
+                full_command = construct_dst_command()
+                container_name = f"{image.replace('/', '-')}_{uuid.uuid4()}"
+                self._run_container_with_entrypoint(
+                    image, full_command, volumes, container_name
+                )
+            except Exception as e:
+                self.logger.error(
+                    f"Error processing destination image {image}: {str(e)}"
+                )
                 return False
             return True
 
         # Process Source Image
-        if not process_image(src_airbyte_image, "src"):
+        if not process_src_image(src_airbyte_image):
             return False
 
         # Process Destination Image
-        if dst_airbyte_image and not process_image(dst_airbyte_image, "dst"):
+        if dst_airbyte_image and not process_dst_image(dst_airbyte_image):
             return False
 
         return True
 
-
     def final_cleanup(self) -> None:
-        """
-        Cleanup all active containers.
-        """
+        """Cleanup all active containers."""
         for container_name in self.active_containers[:]:
             if self.cleanup_container(container_name):
                 self.active_containers.remove(container_name)
@@ -666,11 +691,9 @@ class AirbyteDockerHandler:
 
 
 class ContainerExecutionError(Exception):
-    """
-    Exception raised when there's an error in executing the Docker container.
-    """
-    pass           
-            
+    """Exception raised when there's an error in executing the Docker
+    container."""
+
 class DockerImageNotFoundError(Exception):
     """Custom exception indicating a missing Docker image."""
 
@@ -682,7 +705,8 @@ class ConfigurationError(Exception):
     """Custom exception for configuration-related errors."""
 
     def __init__(self, message="Configuration error"):
-         super().__init__(message)   
+        super().__init__(message)
+
 
 @dataclass
 class Config:
@@ -701,7 +725,7 @@ class ImageInfo:
     dst_image: str = ""  # Destination Airbyte image
 
 
-def parse_arguments(default_config=None) -> argparse.Namespace:
+def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
     """Parse command-line arguments for the Airbyte Docker Runner."""
     default_config = default_config or {}
 
@@ -813,7 +837,9 @@ def handle_state(args):
         )
         executor.execute()
     except Exception as error:
-        logging.error(f"Error executing state script of type {type(error)}: {error}")
+        logging.error(
+            f"Error executing state script of type {type(error)}: {error}"
+        )
         raise RuntimeError("Failed executing state script.") from error
 
 
@@ -833,7 +859,7 @@ def main():
             config_manager = ConfigManager(
                 config_file=getattr(temp_args, "runtime_configs", None)
             )
-            args = parse_arguments(default_config=config_manager.config)
+            args = parse_airbyte_arguments(default_config=config_manager.config)
             config_manager.update_from_args(args)
 
             handler = handle_docker(args)
@@ -848,7 +874,8 @@ def main():
                 logging.warning("Docker handler was not initialized.")
         except Exception as error:
             logging.error(
-                f"Unexpected error of type {type(error)}: {error}", exc_info=True
+                f"Unexpected error of type {type(error)}: {error}",
+                exc_info=True,
             )
             sys.exit(1)
 
