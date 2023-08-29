@@ -3,18 +3,6 @@ name = "airbridge"
 version = "0.1.0"
 description = "Description of your package"
 authors = ["Your Name <your.email@example.com>"]
-packages = [
-    { include = "airbridge", from = "src" }
-]
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.poetry.scripts]
-main = 'airbridge.run:main'
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -26,9 +14,17 @@ pytest = "^7.4.0"
 mock = "^5.1.0"
 coverage = "^7.3.0"
 
+[tool.poetry.scripts]
+main = 'airbridge.run:main'
+
+[tool.poetry.group.dev.dependencies]
+orjson = "^3.9.5"
+pytest-mock = "^3.11.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.pytest.ini_options]
-python_paths = ["src"]
+[[tool.poetry.packages]]
+include = "airbridge"
+from = "src"

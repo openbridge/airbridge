@@ -1,73 +1,118 @@
-
-import os
-import sys
+# Standard library imports
 import json
-from unittest.mock import patch, Mock, MagicMock
-from argparse import Namespace
-from airbridge.run import ConfigManager, AirbyteDockerHandler
-from airbridge.state import main
-import tempfile
-import docker
+from unittest.mock import MagicMock, patch
+
+# Related third-party imports
+import pytest
+
+# Local application/library specific imports
+from airbridge.run import AirbyteDockerHandler
 
 
-# The path to a sample config file for testing purposes
-CONFIG_FILE_PATH = tempfile.mktemp(suffix=".json")
-
+# Define some constant values
+TEST_CONFIG = {
+    "job": "test_job",
+    "catalog_loc": "/path/to/catalog.json",
+    "src_config_loc": "/path/to/src/config.json",
+    "dst_config_loc": "/path/to/dst/config.json",
+}
+TEST_OUTPUT_PATH = "/path/to/output"
+TEST_SRC_IMAGE = "test_src_image"
+TEST_DST_IMAGE = "test_dst_image"
 
 @pytest.fixture
-def sample_config_file():
-    # Creating a sample config file for testing
-    config_data = {"key1": "value1", "key2": "value2"}
-    with open(CONFIG_FILE_PATH, "w") as file:
-        json.dump(config_data, file)
-    return CONFIG_FILE_PATH
+def mock_docker_client():
+    """Returns a mocked Docker client."""
+    client = MagicMock()
+    client.ping.return_value = True
+    client.containers.get.return_value = MagicMock()
+    return client
 
+@pytest.fixture
+def handler(mock_docker_client, mocker):
+    """Returns a fresh instance of the AirbyteDockerHandler."""
+    mocker.patch("os.makedirs", return_value=None)  # Mock directory creation
+    with patch("docker.from_env", return_value=mock_docker_client):
+        return AirbyteDockerHandler(
+            configuration=TEST_CONFIG,
+            output_path=TEST_OUTPUT_PATH,
+            src_image=TEST_SRC_IMAGE,
+            dst_image=TEST_DST_IMAGE
+        )
 
-def test_config_manager_default():
-    cm = ConfigManager()
-    assert cm.config == {}
+def test_init(handler):
+    assert handler.configuration == TEST_CONFIG
+    assert handler.output_path == TEST_OUTPUT_PATH
+    assert handler.src_image == TEST_SRC_IMAGE
+    assert handler.dst_image == TEST_DST_IMAGE
+    assert handler.job_id == TEST_CONFIG["job"]
 
+def test_sanitize_container_name():
+    assert AirbyteDockerHandler.sanitize_container_name("name@with*weird^chars") == "name_with_weird_chars"
 
-def test_config_manager_with_default_config():
-    default_config = {"default_key": "default_value"}
-    cm = ConfigManager(default_config=default_config)
-    assert cm.config == default_config
+def test_load_config_from_file(handler, tmpdir):
+    config_file = tmpdir.join("config.json")
+    test_data = {"key": "value"}
+    config_file.write(json.dumps(test_data))
+    handler.load_config_from_file(str(config_file))
+    assert handler.configuration["key"] == "value"
 
+def test_load_config_from_args(handler):
+    class MockArgs:
+        arg1 = "value1"
+        arg2 = "value2"
 
-def test_config_manager_with_cmd_args():
-    cmd_args = Namespace(arg1="value1", arg2="value2")
-    cm = ConfigManager(cmd_args=cmd_args)
-    assert cm.config == {"arg1": "value1", "arg2": "value2"}
+    handler.load_config_from_args(MockArgs)
+    assert handler.configuration["arg1"] == "value1"
+    assert handler.configuration["arg2"] == "value2"
 
+def test_create_check_command(handler):
+    assert handler.create_check_command() == "check --config /secrets/config.json"
 
-def test_docker_availability_true():
-    with patch("docker.from_env") as mock_docker:
-        # Mocking the ping method to simulate that Docker is available
-        mock_docker.return_value.ping.return_value = True
-        dh = AirbyteDockerHandler()
-        assert dh.check_docker_availability() == True
+def test_initialize_docker_client_success(mock_docker_client):
+    with patch("docker.from_env", return_value=mock_docker_client):
+        client = AirbyteDockerHandler._initialize_docker_client(AirbyteDockerHandler())
+        assert client.ping() == True
 
+def test_check_docker_availability_true(handler):
+    assert handler.check_docker_availability() == True
 
-def test_create_check_command():
-    dh = AirbyteDockerHandler(configuration={}, output_path="")
-    command = dh.create_check_command()
-    assert command == "check --config /secrets/config.json"
+def test_check_image_provided(handler):
+    assert handler.check_image_provided(TEST_SRC_IMAGE, "Source") == True
+    assert handler.check_image_provided(None, "Source") == False
 
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        ("/path/to/output", True),
+        ("/path/with/permission/error", False),
+    ],
+)
+def test_execute(handler, mock_docker_client, test_input, expected):
+    handler.output_path = test_input
 
-@patch("airbridge.run.json.load")
-@patch("builtins.open")
-def test_load_config_from_file(mock_open, mock_json_load):
-    mock_file = MagicMock()
-    mock_open.return_value.__enter__.return_value = mock_file
-    mock_json_load.return_value = {"key": "value"}
+    with patch.object(handler, "pull_docker_image") as mock_pull, \
+            patch.object(handler, "_prepare_src_volumes") as mock_src_volumes, \
+            patch.object(handler, "_prepare_dst_volumes") as mock_dst_volumes, \
+            patch.object(handler, "run_image_check") as mock_image_check, \
+            patch.object(handler, "_run_container_with_entrypoint") as mock_run_container:
 
-    dh = AirbyteDockerHandler(configuration={}, output_path="")
-    dh.load_config_from_file("/path/to/config.json")
-    assert dh.configuration == {"key": "value"}
+        mock_pull.return_value = None
+        mock_image_check.return_value = None
+        mock_run_container.return_value = None
 
+        # Simulate a volume preparation error for the specific input
+        if test_input == "/path/with/permission/error":
+            mock_src_volumes.side_effect = Exception("Permission error")
+            mock_dst_volumes.side_effect = Exception("Permission error")
+        else:
+            mock_src_volumes.return_value = {}
+            mock_dst_volumes.return_value = {}
 
-@patch("airbridge.run.docker.from_env")
-def test_pull_docker_image(mock_docker):
-    dh = AirbyteDockerHandler(configuration={}, output_path="")
-    dh.pull_docker_image("image_name:tag")
-    mock_docker.return_value.images.pull.assert_called_with("image_name:tag")
+        assert handler.execute() == expected
+
+def test_final_cleanup(handler):
+    handler.active_containers = ["container1", "container2"]
+    with patch.object(handler, "cleanup_container", side_effect=[True, False]):
+        handler.final_cleanup()
+        assert handler.active_containers == ["container2"]

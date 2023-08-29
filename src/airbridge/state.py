@@ -2,13 +2,13 @@
 
 """This script handles the initialization and output of Airbyte state."""
 
+# Standard library imports
 import hashlib
 import json
 import logging
 import os
 import re
 from datetime import datetime
-
 
 # ==========================
 # FileUtility

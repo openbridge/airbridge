@@ -1,20 +1,23 @@
-import os
-import sys
-
+# Standard library imports
 import io
 import json
-import orjson
-from pathlib import Path
+import os
+import sys
 from contextlib import redirect_stdout, redirect_stderr
+from pathlib import Path
 
+# Related third-party imports
+import orjson
+import pytest
+
+# Local application/library specific imports
 from airbridge.run import ConfigManager, AirbyteDockerHandler
 from airbridge.state import main
 
 Path("tmp/tests/").mkdir(parents=True, exist_ok=True)
 
 def test_pub_apis_sync():
-    """Run a sync using the Airbyte source for public APIs.
-    """
+    """Run a sync using the Airbyte source for public APIs."""
 
     # Define the volume mapping in the expected format
     volumes_mapping = {"/tmp/tests/": {"bind": "/output", "mode": "rw"}}

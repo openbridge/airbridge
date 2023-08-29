@@ -24,7 +24,7 @@ from datetime import datetime
 import docker
 from filelock import FileLock, Timeout
 
-from state import main as state_main
+from airbridge.state import main as state_main
 
 
 # Constants
