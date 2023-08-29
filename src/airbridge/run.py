@@ -24,7 +24,7 @@ from datetime import datetime
 import docker
 from filelock import FileLock, Timeout
 
-from .state import (
+from state import (
     main as state_main,
     AirbyteStateHandler,
     process_airbyte_state,
