@@ -1,0 +1,10 @@
+{
+    "credentials": "optional_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "access_token": "required_value",
+    "start_date": "required_value",
+    "account_ids": "optional_value",
+    "ad_analytics_reports": "optional_value"
+}

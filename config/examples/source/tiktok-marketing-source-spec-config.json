@@ -1,0 +1,13 @@
+{
+    "credentials": {
+        "auth_type": "optional_value",
+        "app_id": "optional_value",
+        "secret": "optional_value",
+        "access_token": "optional_value",
+        "advertiser_id": "optional_value"
+    },
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "attribution_window": "optional_value",
+    "include_deleted": "optional_value"
+}

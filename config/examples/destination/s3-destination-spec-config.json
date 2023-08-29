@@ -1,0 +1,23 @@
+{
+    "access_key_id": "optional_value",
+    "secret_access_key": "optional_value",
+    "s3_bucket_name": "required_value",
+    "s3_bucket_path": "required_value",
+    "s3_bucket_region": "required_value",
+    "format": {
+        "format_type": "optional_value",
+        "compression_codec": "optional_value",
+        "flattening": "optional_value",
+        "compression": {
+            "compression_type": "optional_value"
+        },
+        "block_size_mb": "optional_value",
+        "max_padding_size_mb": "optional_value",
+        "page_size_kb": "optional_value",
+        "dictionary_page_size_kb": "optional_value",
+        "dictionary_encoding": "optional_value"
+    },
+    "s3_endpoint": "optional_value",
+    "s3_path_format": "optional_value",
+    "file_name_pattern": "optional_value"
+}

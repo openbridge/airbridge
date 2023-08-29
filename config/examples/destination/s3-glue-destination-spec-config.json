@@ -1,0 +1,19 @@
+{
+    "access_key_id": "optional_value",
+    "secret_access_key": "optional_value",
+    "s3_bucket_name": "required_value",
+    "s3_bucket_path": "required_value",
+    "s3_bucket_region": "required_value",
+    "format": {
+        "format_type": "optional_value",
+        "compression": {
+            "compression_type": "optional_value"
+        },
+        "flattening": "optional_value"
+    },
+    "s3_endpoint": "optional_value",
+    "s3_path_format": "optional_value",
+    "file_name_pattern": "optional_value",
+    "glue_database": "required_value",
+    "glue_serialization_library": "required_value"
+}
