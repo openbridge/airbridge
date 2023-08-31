@@ -193,14 +193,8 @@ class ConfigManager:
         """
         self.config.update(vars(cmd_args))
 
-
 class StateHandler:
-    """A handler class for managing the execution of state scripts.
-
-    This class provides methods to run a state script, either once or
-    periodically, and to execute additional functionalities related to the
-    state management and interaction with the Airbyte source image.
-    """
+    """A handler class for managing the execution of state scripts."""
 
     def __init__(
         self,
@@ -224,12 +218,12 @@ class StateHandler:
         self.source_config_hash = source_config_hash
 
     def run_state_script(self) -> bool:
-        """Execute the state script.
+        """Execute the state fetching and storing.
 
         Returns:
-            bool: True if the script executed successfully, False otherwise.
+            bool: True if the state was fetched and stored successfully, False otherwise.
         """
-        self.logger.info("Attempting to run state...")
+        self.logger.info("Attempting to fetch and store state...")
 
         try:
             state_main(
@@ -240,19 +234,23 @@ class StateHandler:
                 self.source_config_hash,
             )
             return True
+        except FileNotFoundError:
+            self.logger.error("State file not found.")
+        except json.JSONDecodeError:
+            self.logger.error("Error decoding JSON from state file.")
         except Exception as e:
             self.logger.exception(
-                f"Unexpected error occurred while running state script: {e}"
+                f"Unexpected error occurred while fetching and storing state: {e}"
             )
             return False
 
     def execute(self) -> None:
-        """Execute the state.py script."""
+        """Execute the state-related actions."""
         self.logger.info("Setting state data for this workflow...")
 
         success = self.run_state_script()
         if not success:
-            self.logger.error("State script execution failed.")
+            self.logger.error("State fetching and storing failed.")
 
 
 class AirbyteDockerHandler:
@@ -407,12 +405,14 @@ class AirbyteDockerHandler:
         """
         try:
             container = self.client.containers.get(container_name)
+            
+            # If we reached this point, it means the container exists.
+            self.logger.info(f"Found an orphan container {container_name} that needs to be cleaned up.")
+            
             container.remove(force=True)
             return True
         except docker.errors.NotFound:
-            self.logger.info(
-                "Confirming container %s was cleaned up...", container_name
-            )
+            # No log or action needed if the container is not found.
             return True
         except docker.errors.APIError as api_err:
             self.logger.error(
@@ -428,6 +428,7 @@ class AirbyteDockerHandler:
                 general_error,
             )
             return False
+
 
     def _common_volumes(self, mode: str, output_file_path: str = None) -> dict:
         """Generate common volume bindings based on the mode (source or
@@ -490,32 +491,40 @@ class AirbyteDockerHandler:
         """
         return self._common_volumes("dst", output_file_path)
 
-    def pull_docker_image(self, image_name: str) -> None:
-        """Pull the specified Docker image.
+    def is_image_present(self, image_name: str, tag: str = None) -> bool:
+        """Check if a specific Docker image with a given tag is present locally."""
+        if not tag:
+            # Check for both the image name alone (implying latest) and the explicit :latest tag
+            return image_name in self.local_images or f"{image_name}:latest" in self.local_images
+        else:
+            return f"{image_name}:{tag}" in self.local_images
 
-        Args:
-            image_name (str): Name of the Docker image to be pulled.
+    @property
+    def local_images(self):
+        """List of locally available Docker images."""
+        return [tag for img in self.client.images.list() for tag in img.tags]
 
-        Raises:
-            Exception: If there's an error while pulling the Docker image.
-        """
+    def pull_docker_image(self, image_name: str, tag: str = None) -> None:
+        """... (rest of the docstring) ..."""
+        
+        if self.is_image_present(image_name, tag):
+            self.logger.info(f"Image {image_name}:{tag if tag else 'latest'} is already present on the host. No need to pull.")
+            return
+
+        self.logger.info(f"Image {image_name}:{tag if tag else 'latest'} is not present locally. Initiating pull from Docker...")
+
         try:
-            self.client.images.pull(image_name)
-            self.logger.info(
-                "Successfully pulled Docker image %s.", image_name
-            )
+            self.client.images.pull(image_name, tag=tag if tag else 'latest')
+            self.logger.info(f"Successfully pulled Docker image {image_name}:{tag if tag else 'latest'}.")
         except docker.errors.ImageNotFound as exc:
-            self.logger.error("Docker image %s not found.", image_name)
-            raise DockerImageNotFoundError(
-                f"Docker image {image_name} not found."
-            ) from exc
+            msg = f"Docker image {image_name}:{tag if tag else 'latest'} not found."
+            self.logger.error(msg)
+            raise DockerImageNotFoundError(msg) from exc
         except Exception as exc:
-            self.logger.exception(
-                "Unexpected error while pulling Docker image %s", image_name
-            )
-            raise Exception(
-                f"Error while pulling Docker image {image_name}. Error: {str(exc)}"
-            ) from exc
+            msg = f"Unexpected error while pulling Docker image {image_name}:{tag if tag else 'latest'}. Error: {str(exc)}"
+            self.logger.exception(msg)
+            raise Exception(msg) from exc
+
 
     def run_image_check(self, image: str, volumes: dict) -> None:
         """Run a configuration check on the provided Docker image.
@@ -539,6 +548,7 @@ class AirbyteDockerHandler:
                 entrypoint='bash -c "$AIRBYTE_ENTRYPOINT check --config /secrets/config.json"',
                 volumes=volumes,
                 detach=True,
+                auto_remove=True,
                 name=container_name,
             )
             self.active_containers.append(container_name)
