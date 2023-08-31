@@ -131,7 +131,7 @@ class StateExtractor:
             dir_structure = os.path.dirname(filename)
             if not os.path.exists(dir_structure):
                 os.makedirs(dir_structure)
-                logging.info("Created directory: %s", dir_structure)
+                logging.debug("Created directory: %s", dir_structure)
             state_file_path = os.path.join(dir_structure, "state.json")
             with open(state_file_path, "w", encoding="utf-8") as outfile:
                 json.dump(final_state, outfile, indent=2)
@@ -161,7 +161,7 @@ class ManifestUtility:
             int: The extracted epoch value.
         """
         epoch_value = os.path.basename(os.path.dirname(path))
-        logging.info(f"Extracted epoch value from path: {epoch_value}")
+        logging.debug(f"Extracted epoch value from path: {epoch_value}")
         return int(epoch_value)
 
     @staticmethod
@@ -185,7 +185,7 @@ class ManifestUtility:
                     }
                 ]
             }
-            logging.info(f"Generated manifest content: {manifest_content}")
+            logging.debug(f"Generated manifest content: {manifest_content}")
             return manifest_content
         except Exception as exc:
             logging.error(f"Error generating manifest content: {str(exc)}")
@@ -222,7 +222,7 @@ class ManifestUtility:
                             manifest_file_path,
                         )
             else:
-                logging.info(
+                logging.debug(
                     "Manifest file %s not found. A new one will be created.",
                     manifest_file_path,
                 )
@@ -289,14 +289,14 @@ class AirbyteStateHandler:
             "/", "-"
         )
 
-        logging.info(
+        logging.debug(
             "Initialized AirbyteStateHandler with output_path: %s",
             self.output_path,
         )
 
     def process_data_file(self, filename):
         """Process a given data file and save its state."""
-        logging.info("Processing data file: %s", filename)
+        logging.debug("Processing data file: %s", filename)
 
         try:
             # Process the file and extract the final state
@@ -308,7 +308,7 @@ class AirbyteStateHandler:
             state_file_path = StateExtractor.save_state_to_file(
                 final_state, filename
             )
-            logging.info("Saved state to: %s", state_file_path)
+            logging.debug("Saved state to: %s", state_file_path)
 
             key_value = self._get_key_value()
             manifest_content = ManifestUtility.generate_manifest_content(
@@ -324,7 +324,7 @@ class AirbyteStateHandler:
             )
 
             ManifestUtility.save_manifest_content(manifest_content)
-            logging.info("Saved manifest content to: %s", manifest_dir)
+            logging.debug("Saved manifest content to: %s", manifest_dir)
 
             return final_state
         except Exception as error:
@@ -357,7 +357,7 @@ class AirbyteStateHandler:
         """Traverse the search path and process each data file."""
         # Set the search path as output_path + airbyte_src_image
         search_path = self.output_path
-        logging.info("Starting traversal from search path: %s", search_path)
+        logging.debug("Starting traversal from search path: %s", search_path)
 
         data_pattern = re.compile(rf"data_{self.src_runtime}\.json")
         data_found = False  # Variable to track if data file(s) was/were found
@@ -375,7 +375,7 @@ class AirbyteStateHandler:
                         )  # Define data_file_path here
                         self.process_data_file(data_file_path)
                         data_found = True
-                        logging.info(f"Found {file} at: {data_file_path}")
+                        logging.debug(f"Found {file} at: {data_file_path}")
 
             if not data_found:
                 logging.warning(
