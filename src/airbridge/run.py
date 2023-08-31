@@ -226,6 +226,9 @@ class StateHandler:
         self.logger.info("Attempting to fetch and store state...")
 
         try:
+            # Log that the state fetching and storing process has started
+            self.logger.info("Starting state fetching and storing process...")
+            
             state_main(
                 src_runtime,
                 self.output_path,
@@ -233,6 +236,10 @@ class StateHandler:
                 self.job_id,
                 self.source_config_hash,
             )
+            
+            # Log that the state fetching and storing process has completed
+            self.logger.info("Completed state fetching and storing process successfully.")
+            
             return True
         except FileNotFoundError:
             self.logger.error("State file not found.")
@@ -244,13 +251,13 @@ class StateHandler:
             )
             return False
 
+
     def execute(self) -> None:
         """Execute the state-related actions."""
-        self.logger.info("Setting state data for this workflow...")
-
         success = self.run_state_script()
         if not success:
-            self.logger.error("State fetching and storing failed.")
+            # This log is optional, but if you want a specific log here, you can keep it
+            self.logger.error("State action execution failed.")
 
 
 class AirbyteDockerHandler:
@@ -407,7 +414,7 @@ class AirbyteDockerHandler:
             container = self.client.containers.get(container_name)
             
             # If we reached this point, it means the container exists.
-            self.logger.info(f"Found an orphan container {container_name} that needs to be cleaned up.")
+            #self.logger.info(f"Found an orphan container {container_name} that needs to be cleaned up.")
             
             container.remove(force=True)
             return True
@@ -655,9 +662,17 @@ class AirbyteDockerHandler:
                 self.run_image_check(image, volumes)
                 full_command = construct_src_command()
                 container_name = f"{image.replace('/', '-')}_{uuid.uuid4()}"
+                
+                # Log that the source container process has started
+                self.logger.info(f"Starting data source sync process for {image}...")
+        
                 self._run_container_with_entrypoint(
                     image, full_command, volumes, container_name
                 )
+                
+                 # Log that the source container process has completed
+                self.logger.info(f"Completed data source sync for {image}.")
+        
             except Exception as e:
                 self.logger.error(
                     f"Error processing source image {image}: {str(e)}"
@@ -672,9 +687,18 @@ class AirbyteDockerHandler:
                 self.run_image_check(image, volumes)
                 full_command = construct_dst_command()
                 container_name = f"{image.replace('/', '-')}_{uuid.uuid4()}"
+                
+                 # Log that the destination container process has started
+                self.logger.info(f"Starting load to {image} data destination...")
+        
                 self._run_container_with_entrypoint(
                     image, full_command, volumes, container_name
                 )
+                
+                # Log that the destination container process has completed
+                self.logger.info(f"Completed load to {image} data destination.")
+       
+       
             except Exception as e:
                 self.logger.error(
                     f"Error processing destination image {image}: {str(e)}"
