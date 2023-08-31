@@ -9,11 +9,11 @@ Airbridge uses base Airbyte Docker images, so you can concentrate on simple, wel
 
 🐳 **Docker-Driven**: Utilizes prebuilt source and destination Docker images via Docker Hub.
 
-🐍 **Python-Powered**: Built on standards-based Python, Airbridge ensures a clean, quick, and modular data flow, allowing for easy integration and modification.
+🐍 **Python-Powered**: Built on standards-based Python, Airbridge ensures a clean, quick, and modular data flow, allowing easy integration and modification.
 
 🔗 **Airbyte Sources and Destinations**: Orchestrating the resources needed to bridge sources and destinations.
 
-🔄 **Automated State Management**: Includes simple, but effective, automated state tracking for each run.
+🔄 **Automated State Management**: Includes simple but effective automated state tracking for each run.
 
 🔓 **Open-Source**: No special license, everything Airbridge is MIT.
 
@@ -341,6 +341,15 @@ Here is an example of the contents of a manifest file:
   ]
 }
 ```
+## Support
+As an opensource initiative, we are proud to be part of a community that collaborates, shares knowledge, and aids one another. 
+
+### Airbyte Connectors
+If you encounter any issues or have queries related to Airbyte source or destination connectors, you should:
+
+- **Review Existing Issues**: Before reaching out to the Airbyte community, please take a moment to review the Airbyte GitHub issues. That dedicated community has already addressed many common questions and issues.
+
+- **Engage with Connector Maintainers And Contributors**: If your question or issue pertains to a specific connector, directly engage the respective connector maintainer or contributor on GitHub. They possess specialized knowledge about their connector and can provide detailed insights.
 
 ## Install Python
 Here's a step-by-step guide on how to check if Python is installed and its version, along with instructions for installing Python on macOS, Windows 10+, and Ubuntu Linux:
