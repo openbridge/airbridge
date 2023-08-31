@@ -104,7 +104,7 @@ To simplify the setup process, everything we detailed above for Steps 2-5 can be
 *Note: The bucket's data will be retained even if the CloudFormation stack is deleted due to the `DeletionPolicy: Retain.`*
 
 ### Download Template
-Download the [cf-s3destination.yaml](./cf-s3destination.yaml) template.
+Download the [cf-s3destination.yaml](./cloudformation.cf-s3destination.yaml) template.
 
 ### Create and save your S3 config
 
