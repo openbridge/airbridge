@@ -2,7 +2,7 @@
 
 We wanted a clean, no-frills, open source solution that focused solely on the core Airbridge source and data connectors. That is it.
 
-Not finding a solution to accomplish this goal, we decided to pull something that fits—introducing Aribridge.
+Not finding a solution to accomplish this goal, we decided to pull something that fits—introducing Airbridge.
 
 ### Overview
 Airbridge uses base Airbyte Docker images, so you can concentrate on simple, well-bounded data extraction and delivery while using the minimum resources to get the job done. Pick your Airbyte source and destination; Airbridge handles the rest.
@@ -23,7 +23,7 @@ Airbridge uses base Airbyte Docker images, so you can concentrate on simple, wel
 ## Prerequisites
 The Airbridge project requires Docker and Python:
 
-1. **Docker**: The project uses Airbyte Docker images, which containerize source and destination connectors, ensuring a consistent and isolated environment for them. See [Docker for Linux](https://docs.docker.com/engine/install/),[Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/install/),[Docker Desktop for Mac](https://docs.docker.com/docker-for-mac/install/)
+1. **Docker**: The project uses Airbyte Docker images, which containerize source and destination connectors, ensuring a consistent and isolated environment for them. See [Docker for Linux](https://docs.docker.com/engine/install/), [Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/install/), [Docker Desktop for Mac](https://docs.docker.com/docker-for-mac/install/)
 2. **Python**: The project is written in Python and requires various Python packages to function correctly. Download and install the required version from [Python's official website](https://www.python.org/downloads/).
 
 
@@ -33,7 +33,7 @@ You have Python and Docker installed. Docker is running, you downloaded Airbridg
 
 The fastest way to get started is via Poetry. 
 
-To install Poetry, you can use Python,or Python3, depending on your environment;
+To install Poetry, you can use Python, or Python3, depending on your environment;
 
 ```
 curl -sSL https://install.python-poetry.org | python -
@@ -117,21 +117,22 @@ Here is an example of the config we pass when running `poetry run main -r ./conf
 
 ## Understanding And Defining Your Configs
 
-The principle effort running Airbridge will be setting up required Airbyte config files. As a result, the following documentation largely focuses on getting Airbyte configs setup correctly for your source and destinations.
+The principal effort running Airbridge will be setting up required Airbyte config files. As a result, the following documentation primarily focuses on getting Airbyte configs set up correctly for your source and destinations.
 
 ### Deep Dive Into Configuration Files
 
-As we have shown in our example, there are three configs that are needed to run the Airbyte service:
- 1. **Source Credentials**: This relfects your authorization to the source. The content of this is defined by to Airbyte connector `spec.json`. Typically there will be a `sample_files/sample_config.json` in a connector directory to use as a reference config file.
+As we have shown in our example, three configs are needed to run the Airbyte service:
+
+ 1. **Source Credentials**: This reflects your authorization to the source. The content of this is defined by Airbyte connector `spec.json`. Typically, a `sample_files/sample_config.json` in a connector directory will be used as a reference config file.
  2. **Source Data Catalog**: The catalog, often named something like `configured_catalog.json`, reflects the datasets and schemas defined by the connector. 
  1. **Destination Credentials**: Like the Source connector, this reflects your authorization to the destination.
 
-Each of these configs are defined by the Airbyte source or destination. As such, you need to follow the specifications they set exactly as they define them. This includes both required or optional elements. To help with that process, we have created a config generation utility script, `config.py`.
+The Airbyte source or destination defines each of these configs. As such, you need to follow the specifications they set precisely as they define them. This includes both required and optional elements. To help with that process, we have created a config generation utility script, `config.py`.
 
 ### Auto Generate Airbyte Config Templates With `config.py`
-Not all Airbyte connectors and destinations contain reference config files. This can make it challenging to determine what should be included in source (or destination) credential file.
+Not all Airbyte connectors and destinations contain reference config files. This can make determining what should be included in the source (or destination) credential file is challenging.
 
-To simplify the process of creating the source and destination credentials, you can run `config.py`. This script will generate a configuration file based on a the specific source or destination specification (`spec.json` or `spec.yaml`) file. It can also create a local copy of the `catalog.json`. 
+To simplify creating the source and destination credentials, you can run  `config.py`. his script will generate a configuration file based on the specific source or destination specification (`spec.json` or `spec.yaml`) file. It can also create a local copy of the `catalog.json`. 
 
 #### Locating The `spec.json` or `spec.yaml` files
 To find the `spec.json` or `spec.yaml`, you will need to navigate to the respective sources on [Github](
@@ -150,7 +151,7 @@ To find the `catalog.json`, you will need to navigate to the respective sources 
 ### Running The Config Generation Script
 The script accepts command-line arguments to specify the input spec file URL and the output path for the generated configuration file.
 
-To run `config.py`, make sure to run `pip install requests jsonschema` if you do not have them installed. *Note: If you're using a Python environment where pip refers to Python 2, you might want to use pip3 instead of pip.*
+To run `config.py`, make sure to run `pip install requests jsonschema` if you do not have them installed. *Note: If you're using a Python environment where pip refers to Python 2, you should use pip3 instead of pip.*
 
 The script takes an input and generates the config as an output via the following arguments;
 
@@ -184,7 +185,7 @@ poetry run ./config.py -c https://raw.githubusercontent.com/airbytehq/airbyte/ma
 ```
 
 #### Example Configs
-The generated configuration file contains placeholder values that can be replaced with actual values before use. The following is a `config.json` generated from the LinkedIn Ads `spec.json`. Note template config highlights required and optional fields as defined in the spec. You will need to supply these according to your specific use case.
+The generated configuration file contains placeholder values that can be replaced with actual values before use. The following is a `config.json` generated from the LinkedIn Ads `spec.json`. Note that the template config highlights required and optional fields as defined in the spec. You will need to supply these according to your specific use case.
 
 ```json
 {
@@ -247,12 +248,10 @@ Here is an example of an S3 `config.json` that removes the optional placeholders
 ```
 
 ## Tracking Your Runs
-In the realm of data processing, especially when dealing with data synchronization or orchestration tasks, it's crucial to have a way to uniquely identify each execution or "job". This is especially true given the use of a state file informs Airbyte where you want to start or where you left off.
-
-This is where the concept of a "Job ID" comes into play.
+In the realm of data processing, especially when dealing with data synchronization or orchestration tasks, it's crucial to have a way to identify each execution or "job uniquely." This is especially true given that a state file informs Airbyte where you want to start or where you left off. This is where the concept of a "Job ID" comes into play.
 
 #### What is a Job ID?
-A Job ID is a unique identifier assigned to a specific execution or "run" of a process or script. In the context of the Airbyte Docker Runner, passing a Job ID via **-j** serves as a unique tag that can differentiate one run of the script from another. This becomes especially important when multiple instances of the script might be running concurrently, or when you need to trace back the results, logs, or errors of a specific execution.
+A Job ID is a unique identifier assigned to a specific execution or "run" of a process or script. In the Airbyte Docker Runner context, passing a Job ID via `-j` serves as a unique tag that can differentiate one script run from another. This becomes especially important when multiple instances of the script might be running concurrently or when you need to trace back the results, logs, or errors of a specific execution.
 
 #### Passing a Job ID
 In the context of the Airbyte Docker Runner, the Job ID can be provided via the -j or --job argument, allowing users or systems to determine the method of uniqueness that best fits their needs. If not provided, the script or system could default to generating one using a method like the above.
@@ -268,12 +267,12 @@ Ultimately, what is used should map to setting a meaningful key that is relevant
 
 
 ## Tracking State
-The `state.json` file plays a crucial role in incremental data extraction processes. In the context of Airbyte or similar data integration tools, the state file keeps track of the last data extraction point. This ensures that in subsequent runs, the script only processes records that have been updated or created after the last extraction, rather than reprocessing the entire dataset.
+The `state.json` file is crucial in incremental data extraction processes. In the context of Airbyte or similar data integration tools, the state file keeps track of the last data extraction point. This ensures that in subsequent runs, the script only processes records that have been updated or created after the previous extraction rather than reprocessing the entire dataset.
 
-The contents of the `state.json` file are derived from the `data.json` output, which is generated by the source worker during the data extraction process. Essentially, the `data.json` file defines the current state of data at the source during a particular run. As a result, `data.json` acts as the blueprint for the `state.json` file, ensuring the state always accurately reflects the most recent extraction point.
+The contents of the `state.json` file are derived from the `data.json` output, which the source worker generates during the data extraction process. The `data.json` file defines the current data state at the source during a particular run. As a result, `data.json` acts as the blueprint for the `state.json` file, ensuring the state always accurately reflects the most recent extraction point.
 
 ### State Structure:
-The file typically contains key-value pairs where the key represents a particular stream or table and the value represents the point up to which data has been extracted. For example:
+The file typically contains key-value pairs where the key represents a particular stream or table, and the value represents the point to which data has been extracted. For example:
 
 ```json
 {
@@ -286,10 +285,10 @@ The file typically contains key-value pairs where the key represents a particula
 }
 ```
 
-In this example, the state.json file indicates that the users table was last extracted up to records updated at 2023-08-24T10:37:49, and the orders table was last extracted up to the order with ID 31245.
+In this example, the state.json file indicates that the user's table was last extracted up to records updated at 2023-08-24T10:37:49, and the orders table was last extracted up to the order with ID 31245.
 
 ### Tracking State
-The manifest file serves as a reference point for understanding the specifics of each job run. By inspecting the manifest, users can glean insights about the source and destination images, the current state of data extraction, and other vital metadata about the job. This can be particularly useful for optimizing your workflows, debugging or when trying to understand the flow and outcome of specific job runs.
+The manifest file serves as a reference point for understanding the specifics of each job run. By inspecting the manifest, users can glean insights about the source and destination images, the current state of data extraction, and other vital metadata about the job. This can be particularly useful for optimizing workflows, debugging, or understanding the flow and outcome of specific job runs.
 
 A manifest will contain the following data;
 
@@ -492,48 +491,51 @@ You can vary the output path for `/stripe-a/` and `/stripe-b` to ensure separati
 ```
 
 
+### Which Python version do these scripts support?
 
-How do I install the dependencies required for these scripts?
+The scripts use a shebang line (#!/usr/bin/env python3), which means they are designed for Python 3. It's recommended to use Python 3.x to ensure compatibility.
 
-Typically, dependencies are listed in a requirements.txt file. You can install them using the command pip install -r requirements.txt. If no such file is provided, ensure you have standard libraries like os, json, and logging available with your Python installation.
-Which Python version do these scripts support?
 
-The scripts use a shebang line (#!/usr/bin/env python3), which indicates they are designed for Python 3. It's recommended to use Python 3.x to ensure compatibility.
-I'm facing issues related to encoding while reading or writing files. How can I resolve them?
+### I'm facing issues related to encoding while reading or writing files. How can I resolve them?
 
 Ensure that the files you're working with are UTF-8 encoded. The scripts expect UTF-8 encoding when reading or writing data.
-Can I modify these scripts to fit my custom workflow or use-case?
+
+
+### Can I modify these scripts to fit my custom workflow or use-case?
 
 Yes, these scripts can be modified to fit specific requirements. However, make sure you understand the logic and flow before making any changes to avoid unexpected behaviors.
-The scripts seem to be taking longer than expected. Is there any way to improve performance?
+The scripts seem to be taking longer than expected. 
+
+
+### Is there any way to improve performance?
 
 Ensure that any external dependencies, like Docker, are running optimally. Also, consider the size and complexity of the data you're processing. Large datasets might naturally take longer to process.
 
 
-#### Where can I find more information or documentation related to these scripts?
+### Where can I find more information or documentation related to these scripts?
 
 The scripts contain docstrings and comments that provide insights into their operation. If they are part of a larger project, check the project's documentation or README for more details.
 
-#### Are there any known limitations or constraints when using these scripts?
+### Are there any known limitations or constraints when using these scripts?
 
 Airbridge and Airbyte rely on external tools like Docker, which may have its own set of requirements. Ensure your system meets all prerequisites before executing the scripts.
 
 
-#### I'm getting errors related to missing or undefined variables. What might be the cause?
+### I'm getting errors related to missing or undefined variables. What might be the cause?
 
 Ensure you're providing all required arguments when executing Airbridge. Check the Airbyte documentation see what contents are expected in a config.
 
 
-#### How can I contribute or report issues related to these scripts?
+### How can I contribute or report issues related to these scripts?
 
 You can typically contribute or report issues via the project's GitHub repository.
 
-#### Are there any security considerations I should be aware of when using these scripts?
+### Are there any security considerations I should be aware of when using these scripts?
 
 Always be cautious with your credentials for your source and destination! Treat them as you would other credentials.
 
 
-#### What configuration options are supported?
+### What configuration options are supported?
 Currently, we support the following;
 - **--airbyte-src-image (or -i)**: Specifies the Airbyte source image.
 - **--src-config-loc (or -s)**: Indicates the location of the source configuration.
@@ -545,41 +547,41 @@ Currently, we support the following;
 - **--runtime-configs (or -r)**: Points to an external configuration file for additional settings.
 - **--job (or -j)**: Represents a job identifier.
 
-#### What is the purpose of the --airbyte-src-image and --airbyte-dst-image arguments?
+### What is the purpose of the --airbyte-src-image and --airbyte-dst-image arguments?
 
 This argument specifies the Docker image for the Airbyte source and destination. You should provide the name of the image you wish to use as the source and destination in your data workflow.
 
-#### How do I use the --src-config-loc and --dst-config-loc arguments?
+### How do I use the --src-config-loc and --dst-config-loc arguments?
 
 These arguments point to the locations of the source and destination configurations, respectively. Provide the path to your configuration files when using these arguments.
 
 
-#### What does the --catalog-loc argument do?
+### What does the --catalog-loc argument do?
 
 This argument specifies the location of the catalog file, which typically contains metadata or schema information for the data being processed.
 
 
-#### Where will the output data be stored?
+### Where will the output data be stored?
 
 The output data's location is determined by the --output-path argument. Provide the directory or path where you want the processed data to be saved.
 
 
-#### I want to continue from where I left off in my data workflow. How do I do that?
+### I want to continue from where I left off in my data workflow. How do I do that?
 
 Use the --state-file-path argument to specify the location of your state file. This file usually contains information about the last processed data point, allowing the script to resume from that point.
 
-#### Can I use an external configuration file with the script?
+### Can I use an external configuration file with the script?
 
 Yes, use the --runtime-configs argument to specify the path to an external configuration file. This allows you to provide additional settings or override default ones.
 
-#### How do I specify a job ID when running the script?
+### How do I specify a job ID when running the script?
 
 Use the --job argument followed by your desired job identifier. This can be useful for logging, tracking, or differentiating between multiple runs of the script.
 
 
 ## Reference Source Documentation Pages
 
-The following is a collection of data source documentation. This is not meant to be comprehesive list, merely a waypoint to help get people headed in the right direction.
+The following is a reference collection of data source documentation. This is not meant to be a comprehensive list, merely a waypoint to help get people pointed in the right direction.
 
 | Connector Name | Documentation Page |
 | --- | --- |
