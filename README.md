@@ -243,7 +243,7 @@ Here is an example of an S3 `config.json` that removes the optional placeholders
 ```
 
 ## Tracking Your Runs
-In the realm of data processing, especially when dealing with data synchronization, logging, or orchestration tasks, it's crucial to have a way to uniquely identify each execution or "job". This is especially true given the use of a state file informs Airbyte where you want to start or where you left off.
+In the realm of data processing, especially when dealing with data synchronization or orchestration tasks, it's crucial to have a way to uniquely identify each execution or "job". This is especially true given the use of a state file informs Airbyte where you want to start or where you left off.
 
 This is where the concept of a "Job ID" comes into play.
 

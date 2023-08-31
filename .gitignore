@@ -38,6 +38,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+*.lock
 
 # Translations
 *.mo
@@ -108,3 +109,4 @@ tmp/
 mock_image/
 states/
 .vscode/
+*manifest.json
