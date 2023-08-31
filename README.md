@@ -1,22 +1,23 @@
 # Airbridge: Lightweight Airbyte Data Flows
 
-Airbridge uses base Airbyte Docker images, so you can concentrate on simple, well-bounded data extraction and delivery while using the minimum resources to get the job done. Pick your Airbyte source and your Airbyte destination; Airbridge handles the rest.
+We wanted a clean, no-frills, open source solution that focused solely on the core Airbridge source and data connectors. That is it.
+
+Not finding a solution to accomplish this goal, we decided to pull something that fits—introducing Aribridge.
 
 ### Overview
+Airbridge uses base Airbyte Docker images, so you can concentrate on simple, well-bounded data extraction and delivery while using the minimum resources to get the job done. Pick your Airbyte source and destination; Airbridge handles the rest.
 
 🐳 **Docker-Driven**: Utilizes prebuilt source and destination Docker images via Docker Hub.
 
 🐍 **Python-Powered**: Built on standards-based Python, Airbridge ensures a clean, quick, and modular data flow, allowing for easy integration and modification.
 
-🔗 **Airbyte Sources and Destinations**: Orchestrating the resources needed to bridge Sources and Destinations into a data workflow.
+🔗 **Airbyte Sources and Destinations**: Orchestrating the resources needed to bridge sources and destinations.
 
 🔄 **Automated State Management**: Includes simple, but effective, automated state tracking for each run.
 
 🔓 **Open-Source**: No special license, everything Airbridge is MIT.
 
 📦 **No Bloat**: No proprietary packages. No unnecessary wrappers.
-
-📜 **License Simplicity**: No intricate licensing models to decipher. Airbridge is MIT licensed.
 
 
 ## Prerequisites
@@ -28,14 +29,15 @@ The Airbridge project requires Docker and Python:
 
 ## Quick Start
 
-You have Python and Docker installed. Docker is running and you are ready to go!
+You have Python and Docker installed. Docker is running, you downloaded Airbridge, and you are ready to go! 
 
 The fastest way to get started is via Poetry. 
 
-To install Poetry, you can use Python (or Python3);
+To install Poetry, you can use Python,or Python3, depending on your environment;
 
 ```
 curl -sSL https://install.python-poetry.org | python -
+or
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
@@ -43,15 +45,16 @@ Once installed, go into the Airbridge project folder, then run the install:
 ```
 poetry install
 ```
-Make sure you are in the `src/airbridge` directory, then you can
-run Airbridge using a simple Python command like this;
+Make sure you are in the `src/airbridge` directory, then you can run Airbridge using a simple Python command like this;
 
 ```bash
 poetry run main  -i airbyte/source-stripe -w airbyte/destination-s3 -s /airbridge/env/stripe-source-config.json -d /airbridge/env/s3-destination-config.json -c /airbridge/env/stripe-catalog.json  -o /airbridge/tmp/mydataoutput/
 ```
-The above command is an example. It shows a connection to Stripe, collecting all the data defined in the catalog, then send the data to Amazon S3. Thats it.
+The above command is an example. It shows a connection to Stripe, collecting all the data defined in the catalog, then send the data to Amazon S3. Thats it. 
 
-After running these two commands, in your local output path you will see;
+***Note**: The paths are above are absolute, not relative. Make sure your have those set correctly specific to your environment!*
+
+After running Airbridge, in your local output path (`-o`), you will see;
 
 ```tree
 - airbridge
@@ -65,22 +68,23 @@ After running these two commands, in your local output path you will see;
 ```
 How this data is represented in your destination will vary according to configs you supplied. 
 
-For Airbridge to work, it needs Airbyte defined configs. Configs define credentials and catalogs.
-
 ## Overview of Configs
+For Airbridge to work, it needs Airbyte defined configs. Configs define required credentials and catalog for Airbyte to work.
+
 In our example `run` command we passed a collection of arguments. 
 
 First, we defined the Airbyte docker source image name. We used `-i airbyte/source-stripe` in our command because we want to use Stripe as a source. 
  
  Next, we set the destination. This is where you want `airbyte/source-stripe` data to land. In our command, we used `-w airbyte/destination-s3` because we want data from Stripe to be sent to our Amazon S3 data lake. 
  
- We passed `-c /env/stripe-catalog.json` because this reflects the catalog of the `airbyte/source-stripe` source. The catalog defines the schemas and other elements of what is supplied via `airbyte/source-stripe`.
+ We passed `-c /env/stripe-catalog.json` because this reflects the catalog of the `airbyte/source-stripe` source. The catalog defines the schemas and other elements that define the outputs of `airbyte/source-stripe`.
  
- Lastly, we set a tmp location to store the data from the source prior to sending it to your destination. We passed `-o /tmp/467d8d8c57ea4eaea7670d2b9aec7ecf` to store the output of `airbyte/source-stripe` prior to posting to `airbyte/destination-s3`.
+ Lastly, we set a location to store the data from the source prior to sending it to your destination. We passed `-o /tmp/467d8d8c57ea4eaea7670d2b9aec7ecf` to store the output of `airbyte/source-stripe` prior to posting to `airbyte/destination-s3`.
 
-You could quickly switch things up, using `airbyte/source-klaviyo` and keep your destination of `airbyte/destination-s3`. 
+### Example: Swapping Sources
+You could quickly switch things up from Stripe to using `airbyte/source-klaviyo` while keeping your destination the same (`airbyte/destination-s3`). 
 
-All you need to do is swap Klaviyo source(`klaviyo-source-config.json`) and catalog(`klaviyo-catalog.json`), but leave unchanged S3 (`s3-destination-config.json`) and the local source output(`/airbridge/tmp/mydataoutput/`).
+All you need to do is swap Klaviyo source (`klaviyo-source-config.json`) and catalog (`klaviyo-catalog.json`), but leave unchanged S3 (`s3-destination-config.json`) and the local source output (`/airbridge/tmp/mydataoutput/`).
 
 ### Passing Your Config Arguments
  The following arguments can be provided to Airbridge:
@@ -93,11 +97,11 @@ All you need to do is swap Klaviyo source(`klaviyo-source-config.json`) and cata
 - **-o**: The desired path for local data output. This is where the raw data from the connector is temporarily stored.
 - **-j**: Job ID associated with the process.
 - **-t**: Path to the state file. If provided, the application will use the state file as an input to your run The state file.
-- **-r**: Path to the external configuration file.
+- **-r**: Path to the external configuration file. For example, rather than pass arguments, you can use a config file via `-r` like this `poetry run main -r ./config.json`. 
 
-Rather than pass arguments, you can use a config file via `-r` like this `poetry run main -r ./config.json`. 
+#### Example Airbridge Config
+Here is an example of the config we pass when running `poetry run main -r ./config.json`;
 
-Here is an example config;
 ```json
 {
     "airbyte-src-image": "airbyte/source-stripe",
@@ -111,7 +115,7 @@ Here is an example config;
 ```
 
 
-## Defining Your Configs
+## Understanding And Defining Your Configs
 
 The principle effort running Airbridge will be setting up required Airbyte config files. As a result, the following documentation largely focuses on getting Airbyte configs setup correctly for your source and destinations.
 
@@ -143,7 +147,7 @@ To find the `catalog.json`, you will need to navigate to the respective sources 
 *NOTE: Always make sure you are passing the `RAW` output of the `yaml` or `json` file. For example, the GitHib link to the raw file will look like `https://raw.githubusercontent.com/airbytehq/airbyte/master/airbyte-integrations/connectors/source-linkedin-ads/source_linkedin_ads/spec.json`.*
 
 
-#### Running The Config Generation Script
+### Running The Config Generation Script
 The script accepts command-line arguments to specify the input spec file URL and the output path for the generated configuration file.
 
 To run `config.py`, make sure to run `pip install requests jsonschema` if you do not have them installed. *Note: If you're using a Python environment where pip refers to Python 2, you might want to use pip3 instead of pip.*
@@ -339,7 +343,6 @@ Here is an example of the contents of a manifest file:
 }
 ```
 
-
 ## Install Python
 Here's a step-by-step guide on how to check if Python is installed and its version, along with instructions for installing Python on macOS, Windows 10+, and Ubuntu Linux:
 
@@ -443,6 +446,136 @@ Poetry is a dependency management and packaging tool that simplifies working wit
 
 #### **I'm getting permissions issues when running `run.py` or `config.py`**
 You may need to setting permissions `chmod +x run.py config.py` if you get permission denied.
+
+#### How is source data organized?
+Data outputs from the source container will have the following structure locally. The output structure of 
+`airbyte-source-stripe/1693336785/data.json` is a bit of a black box as it is defined by the source. 
+```
+├── mydataoutput
+│   └── airbyte-source-stripe
+│       ├── 1693336785
+│       │   ├── data_1693336784.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+│       ├── 1693352821
+│       │   ├── data_1693352820.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+│       ├── 1693353402
+│       │   ├── data_1693353401.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+│       ├── 1693370559
+│       │   ├── data_1693370558.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+```
+
+#### How can I control where the outputs are sent for different accounts in the same source?
+If you want to vary outputs, say for different Stripe accounts, set the `-o` uniquely for each account. For example, lets say you have two Stripe accounts, Stripe A and Stripe B. 
+
+You can vary the output path for `/stripe-a/` and `/stripe-b` to ensure separation of the data;
+
+```tree
+├── /stripe-a/
+│   └── airbyte-source-stripe
+│       ├── 1693336785
+│       │   ├── data_1693336665.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+├── /stripe-b/
+│   └── airbyte-source-stripe
+│       ├── 1693336232
+│       │   ├── data_1693336912.json
+│       │   ├── hsperfdata_root
+│       │   └── state.json
+```
+
+
+
+How do I install the dependencies required for these scripts?
+
+Typically, dependencies are listed in a requirements.txt file. You can install them using the command pip install -r requirements.txt. If no such file is provided, ensure you have standard libraries like os, json, and logging available with your Python installation.
+Which Python version do these scripts support?
+
+The scripts use a shebang line (#!/usr/bin/env python3), which indicates they are designed for Python 3. It's recommended to use Python 3.x to ensure compatibility.
+I'm facing issues related to encoding while reading or writing files. How can I resolve them?
+
+Ensure that the files you're working with are UTF-8 encoded. The scripts expect UTF-8 encoding when reading or writing data.
+Can I modify these scripts to fit my custom workflow or use-case?
+
+Yes, these scripts can be modified to fit specific requirements. However, make sure you understand the logic and flow before making any changes to avoid unexpected behaviors.
+The scripts seem to be taking longer than expected. Is there any way to improve performance?
+
+Ensure that any external dependencies, like Docker, are running optimally. Also, consider the size and complexity of the data you're processing. Large datasets might naturally take longer to process.
+
+
+#### Where can I find more information or documentation related to these scripts?
+
+The scripts contain docstrings and comments that provide insights into their operation. If they are part of a larger project, check the project's documentation or README for more details.
+
+#### Are there any known limitations or constraints when using these scripts?
+
+Airbridge and Airbyte rely on external tools like Docker, which may have its own set of requirements. Ensure your system meets all prerequisites before executing the scripts.
+
+
+#### I'm getting errors related to missing or undefined variables. What might be the cause?
+
+Ensure you're providing all required arguments when executing Airbridge. Check the Airbyte documentation see what contents are expected in a config.
+
+
+#### How can I contribute or report issues related to these scripts?
+
+You can typically contribute or report issues via the project's GitHub repository.
+
+#### Are there any security considerations I should be aware of when using these scripts?
+
+Always be cautious with your credentials for your source and destination! Treat them as you would other credentials.
+
+
+#### What configuration options are supported?
+Currently, we support the following;
+- **--airbyte-src-image (or -i)**: Specifies the Airbyte source image.
+- **--src-config-loc (or -s)**: Indicates the location of the source configuration.
+- **--airbyte-dst-image (or -w)**: Specifies the Airbyte destination image.
+- **--dst-config-loc (or -d)**: Indicates the location of the destination configuration.
+- **--catalog-loc (or -c)**: Points to the location of the catalog.
+- **--output-path (or -o)**: Designates the path where the output should be stored.
+- **--state-file-path (or -t)**: Specifies the path to the state file.
+- **--runtime-configs (or -r)**: Points to an external configuration file for additional settings.
+- **--job (or -j)**: Represents a job identifier.
+
+#### What is the purpose of the --airbyte-src-image and --airbyte-dst-image arguments?
+
+This argument specifies the Docker image for the Airbyte source and destination. You should provide the name of the image you wish to use as the source and destination in your data workflow.
+
+#### How do I use the --src-config-loc and --dst-config-loc arguments?
+
+These arguments point to the locations of the source and destination configurations, respectively. Provide the path to your configuration files when using these arguments.
+
+
+#### What does the --catalog-loc argument do?
+
+This argument specifies the location of the catalog file, which typically contains metadata or schema information for the data being processed.
+
+
+#### Where will the output data be stored?
+
+The output data's location is determined by the --output-path argument. Provide the directory or path where you want the processed data to be saved.
+
+
+#### I want to continue from where I left off in my data workflow. How do I do that?
+
+Use the --state-file-path argument to specify the location of your state file. This file usually contains information about the last processed data point, allowing the script to resume from that point.
+
+#### Can I use an external configuration file with the script?
+
+Yes, use the --runtime-configs argument to specify the path to an external configuration file. This allows you to provide additional settings or override default ones.
+
+#### How do I specify a job ID when running the script?
+
+Use the --job argument followed by your desired job identifier. This can be useful for logging, tracking, or differentiating between multiple runs of the script.
+
 
 ## Reference Source Documentation Pages
 
