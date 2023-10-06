@@ -1,0 +1,7 @@
+{
+    "auth_token": "required_value",
+    "hostname": "optional_value",
+    "organization": "required_value",
+    "project": "required_value",
+    "discover_fields": "optional_value"
+}

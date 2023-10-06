@@ -1,0 +1,5 @@
+{
+    "id": "optional_value",
+    "brewed_before": "required_value",
+    "brewed_after": "required_value"
+}

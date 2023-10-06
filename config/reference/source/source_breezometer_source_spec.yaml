@@ -1,0 +1,9 @@
+{
+    "api_key": "required_value",
+    "latitude": "required_value",
+    "longitude": "required_value",
+    "days_to_forecast": "optional_value",
+    "hours_to_forecast": "optional_value",
+    "historic_hours": "optional_value",
+    "radius": "optional_value"
+}

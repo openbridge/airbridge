@@ -1,0 +1,11 @@
+{
+    "bootstrap_servers": "required_value",
+    "buffer_memory": "required_value",
+    "compression_type": "required_value",
+    "batch_size": "required_value",
+    "retries": "required_value",
+    "topic_num_partitions": "optional_value",
+    "topic_replication_factor": "optional_value",
+    "socket_connection_setup_timeout_ms": "optional_value",
+    "socket_connection_setup_timeout_max_ms": "optional_value"
+}

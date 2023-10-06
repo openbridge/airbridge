@@ -1,0 +1,6 @@
+{
+    "aws_key_id": "required_value",
+    "aws_secret_key": "required_value",
+    "aws_region_name": "required_value",
+    "start_date": "required_value"
+}

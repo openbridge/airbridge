@@ -1,0 +1,7 @@
+{
+    "api_key": "required_value",
+    "symbol": "required_value",
+    "interval": "optional_value",
+    "adjusted": "optional_value",
+    "outputsize": "optional_value"
+}

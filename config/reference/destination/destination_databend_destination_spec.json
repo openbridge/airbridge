@@ -1,0 +1,8 @@
+{
+    "host": "required_value",
+    "port": "optional_value",
+    "database": "required_value",
+    "table": "optional_value",
+    "username": "required_value",
+    "password": "optional_value"
+}

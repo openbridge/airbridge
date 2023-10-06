@@ -1,0 +1,6 @@
+{
+    "application_id": "required_value",
+    "application_secret": "required_value",
+    "token": "required_value",
+    "start_date": "required_value"
+}

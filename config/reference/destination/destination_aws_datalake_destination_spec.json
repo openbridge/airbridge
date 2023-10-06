@@ -1,0 +1,22 @@
+{
+    "aws_account_id": "optional_value",
+    "credentials": {
+        "credentials_title": "optional_value",
+        "role_arn": "optional_value",
+        "aws_access_key_id": "optional_value",
+        "aws_secret_access_key": "optional_value"
+    },
+    "region": "required_value",
+    "bucket_name": "required_value",
+    "bucket_prefix": "optional_value",
+    "lakeformation_database_name": "required_value",
+    "lakeformation_database_default_tag_key": "optional_value",
+    "lakeformation_database_default_tag_values": "optional_value",
+    "lakeformation_governed_tables": "optional_value",
+    "format": {
+        "format_type": "optional_value",
+        "compression_codec": "optional_value"
+    },
+    "partitioning": "optional_value",
+    "glue_catalog_float_as_decimal": "optional_value"
+}

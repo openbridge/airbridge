@@ -1,0 +1,16 @@
+{
+    "credentials": {
+        "option_title": "optional_value",
+        "username": "optional_value",
+        "secret": "optional_value",
+        "project_id": "optional_value",
+        "api_secret": "optional_value"
+    },
+    "attribution_window": "optional_value",
+    "project_timezone": "optional_value",
+    "select_properties_by_default": "optional_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "region": "optional_value",
+    "date_window_size": "optional_value"
+}

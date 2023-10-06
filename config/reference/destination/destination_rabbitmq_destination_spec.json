@@ -1,0 +1,10 @@
+{
+    "ssl": "optional_value",
+    "host": "required_value",
+    "port": "optional_value",
+    "virtual_host": "optional_value",
+    "username": "optional_value",
+    "password": "optional_value",
+    "exchange": "optional_value",
+    "routing_key": "required_value"
+}

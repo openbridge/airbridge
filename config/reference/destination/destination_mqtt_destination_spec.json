@@ -1,0 +1,16 @@
+{
+    "broker_host": "required_value",
+    "broker_port": "required_value",
+    "use_tls": "required_value",
+    "username": "optional_value",
+    "password": "optional_value",
+    "topic_pattern": "required_value",
+    "topic_test": "optional_value",
+    "client": "optional_value",
+    "publisher_sync": "required_value",
+    "connect_timeout": "required_value",
+    "automatic_reconnect": "required_value",
+    "clean_session": "required_value",
+    "message_retained": "required_value",
+    "message_qos": "required_value"
+}

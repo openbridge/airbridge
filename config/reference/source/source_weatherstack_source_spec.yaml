@@ -1,0 +1,6 @@
+{
+    "is_paid_account": "optional_value",
+    "access_key": "required_value",
+    "query": "required_value",
+    "historical_date": "required_value"
+}

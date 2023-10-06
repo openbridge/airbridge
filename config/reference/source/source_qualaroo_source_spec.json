@@ -1,0 +1,6 @@
+{
+    "token": "required_value",
+    "key": "required_value",
+    "start_date": "required_value",
+    "survey_ids": "optional_value"
+}

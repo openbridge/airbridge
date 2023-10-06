@@ -1,0 +1,24 @@
+{
+    "accept_terms": "required_value",
+    "databricks_server_hostname": "required_value",
+    "databricks_http_path": "required_value",
+    "databricks_port": "optional_value",
+    "databricks_personal_access_token": "required_value",
+    "database": "optional_value",
+    "schema": "optional_value",
+    "enable_schema_evolution": "optional_value",
+    "data_source": {
+        "data_source_type": "optional_value",
+        "s3_bucket_name": "optional_value",
+        "s3_bucket_path": "optional_value",
+        "s3_bucket_region": "optional_value",
+        "s3_access_key_id": "optional_value",
+        "s3_secret_access_key": "optional_value",
+        "file_name_pattern": "optional_value",
+        "azure_blob_storage_endpoint_domain_name": "optional_value",
+        "azure_blob_storage_account_name": "optional_value",
+        "azure_blob_storage_container_name": "optional_value",
+        "azure_blob_storage_sas_token": "optional_value"
+    },
+    "purge_staging_data": "optional_value"
+}

@@ -1,0 +1,7 @@
+{
+    "pool_ids": "required_value",
+    "start_ids": "required_value",
+    "url_base": "optional_value",
+    "max_pages": "optional_value",
+    "page_size": "optional_value"
+}

@@ -1,0 +1,8 @@
+{
+    "load_url": "required_value",
+    "jdbc_url": "required_value",
+    "cluster_name": "required_value",
+    "user_name": "required_value",
+    "password": "required_value",
+    "database": "required_value"
+}

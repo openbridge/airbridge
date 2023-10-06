@@ -1,0 +1,4 @@
+{
+    "host": "required_value",
+    "api_key": "optional_value"
+}

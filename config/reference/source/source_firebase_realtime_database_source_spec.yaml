@@ -1,0 +1,6 @@
+{
+    "database_name": "required_value",
+    "google_application_credentials": "required_value",
+    "path": "optional_value",
+    "buffer_size": "optional_value"
+}

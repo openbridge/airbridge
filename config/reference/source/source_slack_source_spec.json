@@ -1,0 +1,13 @@
+{
+    "start_date": "required_value",
+    "lookback_window": "required_value",
+    "join_channels": "required_value",
+    "channel_filter": "optional_value",
+    "credentials": {
+        "option_title": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "access_token": "optional_value",
+        "api_token": "optional_value"
+    }
+}

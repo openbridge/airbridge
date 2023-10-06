@@ -1,0 +1,7 @@
+{
+    "access_token": "required_value",
+    "survey_id": "optional_value",
+    "region": {
+        "url_base": "optional_value"
+    }
+}

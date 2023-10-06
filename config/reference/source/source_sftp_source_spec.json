@@ -1,0 +1,13 @@
+{
+    "user": "required_value",
+    "host": "required_value",
+    "port": "required_value",
+    "credentials": {
+        "auth_method": "optional_value",
+        "auth_user_password": "optional_value",
+        "auth_ssh_key": "optional_value"
+    },
+    "file_types": "optional_value",
+    "folder_path": "optional_value",
+    "file_pattern": "optional_value"
+}

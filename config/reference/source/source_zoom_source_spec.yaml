@@ -1,0 +1,6 @@
+{
+    "account_id": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "authorization_endpoint": "required_value"
+}

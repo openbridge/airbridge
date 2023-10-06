@@ -1,0 +1,6 @@
+{
+    "api_token": "required_value",
+    "api_url": "required_value",
+    "project_name": "optional_value",
+    "nameprefix": "optional_value"
+}

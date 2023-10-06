@@ -1,0 +1,7 @@
+{
+    "access_token": "required_value",
+    "backend_url": "required_value",
+    "dataset_id": "required_value",
+    "start_date": "required_value",
+    "slice_range": "optional_value"
+}

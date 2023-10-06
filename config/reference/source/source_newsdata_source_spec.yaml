@@ -1,0 +1,8 @@
+{
+    "api_key": "required_value",
+    "OneOf": "optional_value",
+    "domain": "optional_value",
+    "country": "optional_value",
+    "category": "optional_value",
+    "language": "optional_value"
+}

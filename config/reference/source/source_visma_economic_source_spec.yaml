@@ -1,0 +1,4 @@
+{
+    "app_secret_token": "required_value",
+    "agreement_grant_token": "required_value"
+}

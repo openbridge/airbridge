@@ -1,0 +1,8 @@
+{
+    "additional_metrics": "optional_value",
+    "api_token": "required_value",
+    "dimensions": "required_value",
+    "ingest_start": "required_value",
+    "metrics": "required_value",
+    "until_today": "optional_value"
+}

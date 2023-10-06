@@ -1,0 +1,7 @@
+{
+    "dynamodb_endpoint": "optional_value",
+    "dynamodb_table_name_prefix": "required_value",
+    "dynamodb_region": "required_value",
+    "access_key_id": "required_value",
+    "secret_access_key": "required_value"
+}

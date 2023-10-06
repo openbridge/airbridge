@@ -1,0 +1,10 @@
+{
+    "endpoint": "required_value",
+    "authenticationMethod": {
+        "method": "optional_value",
+        "apiKeyId": "optional_value",
+        "apiKeySecret": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value"
+    }
+}

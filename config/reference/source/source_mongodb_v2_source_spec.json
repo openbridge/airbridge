@@ -1,0 +1,13 @@
+{
+    "database_config": {
+        "cluster_type": "optional_value",
+        "connection_string": "optional_value",
+        "database": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value",
+        "auth_source": "optional_value"
+    },
+    "initial_waiting_seconds": "optional_value",
+    "queue_size": "optional_value",
+    "discover_sample_size": "optional_value"
+}

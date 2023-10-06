@@ -1,0 +1,8 @@
+{
+    "api_key": "required_value",
+    "start_date": "required_value",
+    "query": "optional_value",
+    "tag": "optional_value",
+    "section": "optional_value",
+    "end_date": "optional_value"
+}

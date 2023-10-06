@@ -1,0 +1,5 @@
+{
+    "endpoint": "required_value",
+    "token": "required_value",
+    "user_id": "required_value"
+}

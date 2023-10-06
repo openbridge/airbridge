@@ -1,0 +1,7 @@
+{
+    "org_id": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value"
+}

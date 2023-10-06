@@ -1,0 +1,14 @@
+{
+    "account_id": "required_value",
+    "access_token": "required_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "include_deleted": "optional_value",
+    "fetch_thumbnail_images": "optional_value",
+    "custom_insights": "optional_value",
+    "page_size": "optional_value",
+    "insights_lookback_window": "optional_value",
+    "action_breakdowns_allow_empty": "optional_value",
+    "client_id": "optional_value",
+    "client_secret": "optional_value"
+}

@@ -1,0 +1,7 @@
+{
+    "url": "required_value",
+    "tenant_id": "required_value",
+    "client_id": "required_value",
+    "client_secret_value": "required_value",
+    "odata_maxpagesize": "optional_value"
+}

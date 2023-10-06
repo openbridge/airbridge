@@ -1,0 +1,10 @@
+{
+    "period": "required_value",
+    "credentials": {
+        "auth_type": "optional_value",
+        "tenant_id": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "refresh_token": "optional_value"
+    }
+}

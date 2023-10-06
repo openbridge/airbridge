@@ -1,0 +1,4 @@
+{
+    "apikey": "required_value",
+    "query_campsites": "optional_value"
+}

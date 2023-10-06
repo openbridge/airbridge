@@ -1,0 +1,6 @@
+{
+    "domain": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "run_look_ids": "optional_value"
+}

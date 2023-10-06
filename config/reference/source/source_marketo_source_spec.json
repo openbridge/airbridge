@@ -1,0 +1,6 @@
+{
+    "domain_url": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "start_date": "required_value"
+}

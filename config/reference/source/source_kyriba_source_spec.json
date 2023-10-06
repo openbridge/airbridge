@@ -1,0 +1,7 @@
+{
+    "domain": "required_value",
+    "username": "required_value",
+    "password": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value"
+}

@@ -1,0 +1,18 @@
+{
+    "accept_terms": "required_value",
+    "server_hostname": "required_value",
+    "port": "optional_value",
+    "username": "required_value",
+    "password": "required_value",
+    "catalog": "required_value",
+    "catalog_schema": "optional_value",
+    "staging_object_store": {
+        "object_store_type": "optional_value",
+        "s3_bucket_name": "optional_value",
+        "s3_bucket_path": "optional_value",
+        "s3_bucket_region": "optional_value",
+        "s3_access_key_id": "optional_value",
+        "s3_secret_access_key": "optional_value"
+    },
+    "purge_staging_table": "optional_value"
+}

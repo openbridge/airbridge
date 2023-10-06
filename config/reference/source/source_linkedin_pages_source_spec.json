@@ -1,0 +1,10 @@
+{
+    "org_id": "required_value",
+    "credentials": {
+        "auth_method": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "refresh_token": "optional_value",
+        "access_token": "optional_value"
+    }
+}

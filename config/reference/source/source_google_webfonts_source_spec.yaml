@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "sort": "optional_value",
+    "prettyPrint": "optional_value",
+    "alt": "optional_value"
+}

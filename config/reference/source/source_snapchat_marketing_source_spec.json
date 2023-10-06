@@ -1,0 +1,7 @@
+{
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value"
+}

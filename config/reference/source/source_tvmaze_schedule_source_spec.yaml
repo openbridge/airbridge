@@ -1,0 +1,6 @@
+{
+    "start_date": "required_value",
+    "end_date": "optional_value",
+    "domestic_schedule_country_code": "required_value",
+    "web_schedule_country_code": "optional_value"
+}

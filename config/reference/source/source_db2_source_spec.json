@@ -1,0 +1,13 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "db": "required_value",
+    "username": "required_value",
+    "password": "required_value",
+    "jdbc_url_params": "optional_value",
+    "encryption": {
+        "encryption_method": "optional_value",
+        "ssl_certificate": "optional_value",
+        "key_store_password": "optional_value"
+    }
+}

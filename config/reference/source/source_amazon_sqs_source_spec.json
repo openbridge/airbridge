@@ -1,0 +1,11 @@
+{
+    "queue_url": "required_value",
+    "region": "required_value",
+    "delete_messages": "required_value",
+    "max_batch_size": "optional_value",
+    "max_wait_time": "optional_value",
+    "attributes_to_return": "optional_value",
+    "visibility_timeout": "optional_value",
+    "access_key": "optional_value",
+    "secret_key": "optional_value"
+}

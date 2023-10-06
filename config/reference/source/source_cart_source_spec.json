@@ -1,0 +1,11 @@
+{
+    "credentials": {
+        "auth_type": "optional_value",
+        "user_name": "optional_value",
+        "user_secret": "optional_value",
+        "site_id": "optional_value",
+        "access_token": "optional_value",
+        "store_name": "optional_value"
+    },
+    "start_date": "required_value"
+}

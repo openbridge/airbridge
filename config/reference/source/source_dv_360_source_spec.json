@@ -1,0 +1,13 @@
+{
+    "credentials": {
+        "access_token": "required_value",
+        "refresh_token": "required_value",
+        "token_uri": "required_value",
+        "client_id": "required_value",
+        "client_secret": "required_value"
+    },
+    "partner_id": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value",
+    "filters": "optional_value"
+}

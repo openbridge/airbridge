@@ -1,0 +1,11 @@
+{
+    "url_base": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "user_login_id": "optional_value",
+    "user_login": "optional_value",
+    "tpl_key": "optional_value",
+    "customer_id": "optional_value",
+    "facility_id": "optional_value",
+    "start_date": "optional_value"
+}

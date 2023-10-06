@@ -1,0 +1,6 @@
+{
+    "email": "required_value",
+    "password": "required_value",
+    "start_date": "required_value",
+    "logs_batch_size": "optional_value"
+}

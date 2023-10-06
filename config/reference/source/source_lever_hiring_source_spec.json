@@ -1,0 +1,11 @@
+{
+    "credentials": {
+        "auth_type": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "refresh_token": "optional_value",
+        "api_key": "optional_value"
+    },
+    "start_date": "required_value",
+    "environment": "optional_value"
+}

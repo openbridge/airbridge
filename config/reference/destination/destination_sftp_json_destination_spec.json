@@ -1,0 +1,7 @@
+{
+    "host": "required_value",
+    "port": "optional_value",
+    "username": "required_value",
+    "password": "required_value",
+    "destination_path": "required_value"
+}

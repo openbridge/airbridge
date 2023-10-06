@@ -1,18 +1,40 @@
 {
-  "documentationUrl": "https://docs.airbyte.com/integrations/sources/lemlist",
-  "connectionSpecification": {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Lemlist Spec",
-    "type": "object",
-    "required": ["api_key"],
-    "additionalProperties": false,
-    "properties": {
-      "api_key": {
-        "type": "string",
-        "title": "API key",
-        "description": "Lemlist API key.",
-        "airbyte_secret": true
-      }
+  "streams": [
+    {
+      "stream": {
+        "name": "team",
+        "json_schema": {},
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh",
+      "destination_sync_mode": "overwrite"
+    },
+    {
+      "stream": {
+        "name": "campaigns",
+        "json_schema": {},
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh",
+      "destination_sync_mode": "overwrite"
+    },
+    {
+      "stream": {
+        "name": "activities",
+        "json_schema": {},
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh",
+      "destination_sync_mode": "overwrite"
+    },
+    {
+      "stream": {
+        "name": "unsubscribes",
+        "json_schema": {},
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh",
+      "destination_sync_mode": "overwrite"
     }
-  }
+  ]
 }

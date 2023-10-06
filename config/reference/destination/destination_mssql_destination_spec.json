@@ -1,0 +1,13 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "database": "required_value",
+    "schema": "required_value",
+    "username": "required_value",
+    "password": "optional_value",
+    "jdbc_url_params": "optional_value",
+    "ssl_method": {
+        "ssl_method": "optional_value",
+        "hostNameInCertificate": "optional_value"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "destination_path": "required_value",
+    "delimiter_type": {
+        "delimiter": "optional_value"
+    }
+}

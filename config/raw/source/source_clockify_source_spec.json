@@ -1,29 +1,109 @@
 {
-  "documentationUrl": "https://docs.airbyte.com/integrations/sources/clockify",
-  "connectionSpecification": {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Clockify Spec",
-    "type": "object",
-    "required": ["workspace_id", "api_key"],
-    "additionalProperties": true,
-    "properties": {
-      "workspace_id": {
-        "title": "Workspace Id",
-        "description": "WorkSpace Id",
-        "type": "string"
+  "streams": [
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "users",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
       },
-      "api_key": {
-        "title": "API Key",
-        "description": "You can get your api access_key <a href=\"https://app.clockify.me/user/settings\">here</a> This API is Case Sensitive.",
-        "type": "string",
-        "airbyte_secret": true
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "projects",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
       },
-      "api_url": {
-        "title": "API Url",
-        "description": "The URL for the Clockify API. This should only need to be modified if connecting to an enterprise version of Clockify.",
-        "type": "string",
-        "default": "https://api.clockify.me"
-      }
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "clients",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "tags",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "user_groups",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "time_entries",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh"
+    },
+    {
+      "cursor_field": null,
+      "destination_sync_mode": "append",
+      "primary_key": null,
+      "stream": {
+        "default_cursor_field": null,
+        "json_schema": {},
+        "name": "tasks",
+        "namespace": null,
+        "source_defined_cursor": null,
+        "source_defined_primary_key": null,
+        "supported_sync_modes": ["full_refresh"]
+      },
+      "sync_mode": "full_refresh"
     }
-  }
+  ]
 }

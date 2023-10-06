@@ -1,0 +1,6 @@
+{
+    "access_token": "required_value",
+    "gocardless_environment": "required_value",
+    "gocardless_version": "required_value",
+    "start_date": "required_value"
+}

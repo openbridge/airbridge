@@ -1,0 +1,5 @@
+{
+    "credentials_json": "required_value",
+    "email": "required_value",
+    "lookback": "optional_value"
+}

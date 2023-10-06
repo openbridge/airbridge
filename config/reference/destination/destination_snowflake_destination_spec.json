@@ -1,0 +1,20 @@
+{
+    "host": "required_value",
+    "role": "required_value",
+    "warehouse": "required_value",
+    "database": "required_value",
+    "schema": "required_value",
+    "username": "required_value",
+    "credentials": {
+        "auth_type": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "access_token": "optional_value",
+        "refresh_token": "optional_value",
+        "private_key": "optional_value",
+        "private_key_password": "optional_value",
+        "password": "optional_value"
+    },
+    "jdbc_url_params": "optional_value",
+    "raw_data_schema": "optional_value"
+}

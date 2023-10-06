@@ -1,0 +1,21 @@
+{
+    "project_id": "required_value",
+    "dataset_location": "required_value",
+    "dataset_id": "required_value",
+    "loading_method": {
+        "method": "optional_value",
+        "credential": {
+            "credential_type": "optional_value",
+            "hmac_key_access_id": "optional_value",
+            "hmac_key_secret": "optional_value"
+        },
+        "gcs_bucket_name": "optional_value",
+        "gcs_bucket_path": "optional_value",
+        "keep_files_in_gcs-bucket": "optional_value",
+        "file_buffer_count": "optional_value"
+    },
+    "credentials_json": "optional_value",
+    "transformation_priority": "optional_value",
+    "big_query_client_buffer_size_mb": "optional_value",
+    "raw_data_dataset": "optional_value"
+}

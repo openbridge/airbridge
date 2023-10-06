@@ -1,0 +1,36 @@
+{
+    "start_date": "optional_value",
+    "streams": "required_value",
+    "bucket": "required_value",
+    "aws_access_key_id": "optional_value",
+    "aws_secret_access_key": "optional_value",
+    "endpoint": "optional_value",
+    "dataset": "optional_value",
+    "path_pattern": "optional_value",
+    "format": {
+        "filetype": "optional_value",
+        "delimiter": "optional_value",
+        "infer_datatypes": "optional_value",
+        "quote_char": "optional_value",
+        "escape_char": "optional_value",
+        "encoding": "optional_value",
+        "double_quote": "optional_value",
+        "newlines_in_values": "optional_value",
+        "additional_reader_options": "optional_value",
+        "advanced_options": "optional_value",
+        "block_size": "optional_value",
+        "columns": "optional_value",
+        "batch_size": "optional_value",
+        "buffer_size": "optional_value",
+        "unexpected_field_behavior": "optional_value"
+    },
+    "schema": "optional_value",
+    "provider": {
+        "bucket": "optional_value",
+        "aws_access_key_id": "optional_value",
+        "aws_secret_access_key": "optional_value",
+        "path_prefix": "optional_value",
+        "endpoint": "optional_value",
+        "start_date": "optional_value"
+    }
+}

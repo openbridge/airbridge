@@ -1,0 +1,16 @@
+{
+    "credentials": {
+        "option_title": "optional_value",
+        "access_token": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "personal_access_token": "optional_value"
+    },
+    "repository": "optional_value",
+    "repositories": "required_value",
+    "start_date": "optional_value",
+    "api_url": "optional_value",
+    "branch": "optional_value",
+    "branches": "optional_value",
+    "requests_per_hour": "optional_value"
+}

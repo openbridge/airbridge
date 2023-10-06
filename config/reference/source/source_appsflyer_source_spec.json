@@ -1,0 +1,6 @@
+{
+    "app_id": "required_value",
+    "api_token": "required_value",
+    "start_date": "required_value",
+    "timezone": "optional_value"
+}

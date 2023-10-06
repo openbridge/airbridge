@@ -1,0 +1,13 @@
+{
+    "api_key": "required_value",
+    "query": "required_value",
+    "language": "optional_value",
+    "country": "optional_value",
+    "in": "optional_value",
+    "nullable": "optional_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "sortby": "optional_value",
+    "top_headlines_query": "optional_value",
+    "top_headlines_topic": "optional_value"
+}

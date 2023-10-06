@@ -1,0 +1,27 @@
+{
+    "indexing": {
+        "pinecone_key": "required_value",
+        "pinecone_environment": "required_value",
+        "index": "required_value"
+    },
+    "embedding": {
+        "mode": "optional_value",
+        "openai_key": "optional_value",
+        "cohere_key": "optional_value",
+        "api_base": "optional_value",
+        "deployment": "optional_value"
+    },
+    "processing": {
+        "chunk_size": "required_value",
+        "chunk_overlap": "optional_value",
+        "text_fields": "optional_value",
+        "metadata_fields": "optional_value",
+        "text_splitter": {
+            "mode": "optional_value",
+            "separators": "optional_value",
+            "keep_separator": "optional_value",
+            "split_level": "optional_value",
+            "language": "optional_value"
+        }
+    }
+}

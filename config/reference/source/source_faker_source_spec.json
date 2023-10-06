@@ -1,0 +1,7 @@
+{
+    "count": "required_value",
+    "seed": "optional_value",
+    "records_per_slice": "optional_value",
+    "always_updated": "optional_value",
+    "parallelism": "optional_value"
+}

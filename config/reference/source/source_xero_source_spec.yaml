@@ -1,0 +1,11 @@
+{
+    "authentication": {
+        "client_id": "required_value",
+        "client_secret": "required_value",
+        "refresh_token": "required_value",
+        "access_token": "required_value",
+        "token_expiry_date": "required_value"
+    },
+    "tenant_id": "required_value",
+    "start_date": "required_value"
+}

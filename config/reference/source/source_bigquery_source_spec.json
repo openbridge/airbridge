@@ -1,0 +1,5 @@
+{
+    "project_id": "required_value",
+    "dataset_id": "optional_value",
+    "credentials_json": "required_value"
+}

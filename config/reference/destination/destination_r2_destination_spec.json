@@ -1,0 +1,21 @@
+{
+    "account_id": "required_value",
+    "access_key_id": "required_value",
+    "secret_access_key": "required_value",
+    "s3_bucket_name": "required_value",
+    "s3_bucket_path": "required_value",
+    "format": {
+        "format_type": "optional_value",
+        "compression_codec": {
+            "codec": "optional_value",
+            "compression_level": "optional_value",
+            "include_checksum": "optional_value"
+        },
+        "flattening": "optional_value",
+        "compression": {
+            "compression_type": "optional_value"
+        }
+    },
+    "s3_path_format": "optional_value",
+    "file_name_pattern": "optional_value"
+}

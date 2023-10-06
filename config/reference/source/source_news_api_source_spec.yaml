@@ -1,0 +1,14 @@
+{
+    "api_key": "required_value",
+    "search_query": "optional_value",
+    "search_in": "optional_value",
+    "sources": "optional_value",
+    "domains": "optional_value",
+    "exclude_domains": "optional_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "language": "optional_value",
+    "country": "required_value",
+    "category": "required_value",
+    "sort_by": "required_value"
+}

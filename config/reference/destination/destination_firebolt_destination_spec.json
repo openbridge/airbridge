@@ -1,0 +1,15 @@
+{
+    "username": "required_value",
+    "password": "required_value",
+    "account": "optional_value",
+    "host": "optional_value",
+    "database": "required_value",
+    "engine": "optional_value",
+    "loading_method": {
+        "method": "optional_value",
+        "s3_bucket": "optional_value",
+        "s3_region": "optional_value",
+        "aws_key_id": "optional_value",
+        "aws_key_secret": "optional_value"
+    }
+}

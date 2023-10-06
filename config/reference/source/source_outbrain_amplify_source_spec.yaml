@@ -1,0 +1,12 @@
+{
+    "credentials": {
+        "type": "optional_value",
+        "access_token": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value"
+    },
+    "report_granularity": "optional_value",
+    "geo_location_breakdown": "optional_value",
+    "start_date": "required_value",
+    "end_date": "optional_value"
+}

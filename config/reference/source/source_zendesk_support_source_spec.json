@@ -1,0 +1,13 @@
+{
+    "start_date": "optional_value",
+    "subdomain": "required_value",
+    "credentials": {
+        "credentials": "optional_value",
+        "access_token": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "email": "optional_value",
+        "api_token": "optional_value"
+    },
+    "ignore_pagination": "optional_value"
+}

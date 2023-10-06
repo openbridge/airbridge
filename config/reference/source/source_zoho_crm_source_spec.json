@@ -1,0 +1,9 @@
+{
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "dc_region": "required_value",
+    "environment": "required_value",
+    "start_datetime": "optional_value",
+    "edition": "required_value"
+}

@@ -1,0 +1,5 @@
+{
+    "api_key": "required_value",
+    "begin_time": "optional_value",
+    "end_time": "optional_value"
+}

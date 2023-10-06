@@ -1,0 +1,9 @@
+{
+    "keyspace": "required_value",
+    "username": "required_value",
+    "password": "required_value",
+    "address": "required_value",
+    "port": "required_value",
+    "datacenter": "optional_value",
+    "replication": "optional_value"
+}

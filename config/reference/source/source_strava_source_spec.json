@@ -1,0 +1,8 @@
+{
+    "auth_type": "optional_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "athlete_id": "required_value",
+    "start_date": "required_value"
+}

@@ -1,0 +1,37 @@
+{
+    "processing": {
+        "chunk_size": "required_value",
+        "chunk_overlap": "optional_value",
+        "text_fields": "optional_value",
+        "metadata_fields": "optional_value",
+        "text_splitter": {
+            "mode": "optional_value",
+            "separators": "optional_value",
+            "keep_separator": "optional_value",
+            "split_level": "optional_value",
+            "language": "optional_value"
+        }
+    },
+    "embedding": {
+        "mode": "optional_value",
+        "openai_key": "optional_value",
+        "cohere_key": "optional_value",
+        "field_name": "optional_value",
+        "dimensions": "optional_value",
+        "api_base": "optional_value",
+        "deployment": "optional_value"
+    },
+    "indexing": {
+        "host": "required_value",
+        "db": "optional_value",
+        "collection": "required_value",
+        "auth": {
+            "mode": "optional_value",
+            "token": "optional_value",
+            "username": "optional_value",
+            "password": "optional_value"
+        },
+        "vector_field": "optional_value",
+        "text_field": "optional_value"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "api_key": "optional_value",
+    "urls": "required_value",
+    "strategies": "required_value",
+    "categories": "required_value"
+}

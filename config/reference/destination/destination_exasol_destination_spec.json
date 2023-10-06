@@ -1,0 +1,9 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "certificateFingerprint": "optional_value",
+    "username": "required_value",
+    "password": "optional_value",
+    "schema": "required_value",
+    "jdbc_url_params": "optional_value"
+}

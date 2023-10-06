@@ -1,0 +1,5 @@
+{
+    "account_id": "required_value",
+    "start_date": "required_value",
+    "bearer_token": "required_value"
+}

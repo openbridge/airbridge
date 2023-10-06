@@ -1,0 +1,9 @@
+{
+    "api_key": "required_value",
+    "start_date": "required_value",
+    "lookback_window_days": "optional_value",
+    "string_event_properties_keys": "optional_value",
+    "numeric_event_properties_keys": "optional_value",
+    "subscription_usage_grouping_key": "optional_value",
+    "plan_id": "optional_value"
+}

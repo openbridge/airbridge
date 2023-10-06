@@ -1,0 +1,14 @@
+{
+    "username": "required_value",
+    "password": "optional_value",
+    "private_key": "optional_value",
+    "host": "required_value",
+    "port": "required_value",
+    "stream_name": "required_value",
+    "file_type": "optional_value",
+    "separator": "optional_value",
+    "folder_path": "required_value",
+    "file_pattern": "optional_value",
+    "file_most_recent": "optional_value",
+    "start_date": "required_value"
+}

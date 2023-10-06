@@ -1,0 +1,5 @@
+{
+    "api_token": "required_value",
+    "endpoint": "required_value",
+    "start_date": "optional_value"
+}

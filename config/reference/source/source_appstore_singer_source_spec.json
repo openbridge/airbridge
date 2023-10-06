@@ -1,0 +1,7 @@
+{
+    "key_id": "required_value",
+    "private_key": "required_value",
+    "issuer_id": "required_value",
+    "vendor": "required_value",
+    "start_date": "required_value"
+}

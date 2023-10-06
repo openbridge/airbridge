@@ -1,0 +1,6 @@
+{
+    "instance_api_url": "required_value",
+    "username": "optional_value",
+    "password": "optional_value",
+    "session_token": "optional_value"
+}

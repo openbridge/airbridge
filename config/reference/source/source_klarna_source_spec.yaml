@@ -1,0 +1,6 @@
+{
+    "region": "required_value",
+    "playground": "required_value",
+    "username": "required_value",
+    "password": "required_value"
+}

@@ -1,0 +1,5 @@
+{
+    "api_key": "required_value",
+    "data_type": "required_value",
+    "symbols": "optional_value"
+}

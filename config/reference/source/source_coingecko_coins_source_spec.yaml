@@ -1,0 +1,8 @@
+{
+    "api_key": "optional_value",
+    "coin_id": "required_value",
+    "vs_currency": "required_value",
+    "days": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value"
+}

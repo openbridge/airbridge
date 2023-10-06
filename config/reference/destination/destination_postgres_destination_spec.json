@@ -1,0 +1,17 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "database": "required_value",
+    "schema": "required_value",
+    "username": "required_value",
+    "password": "optional_value",
+    "ssl": "optional_value",
+    "ssl_mode": {
+        "mode": "optional_value",
+        "ca_certificate": "optional_value",
+        "client_key_password": "optional_value",
+        "client_certificate": "optional_value",
+        "client_key": "optional_value"
+    },
+    "jdbc_url_params": "optional_value"
+}

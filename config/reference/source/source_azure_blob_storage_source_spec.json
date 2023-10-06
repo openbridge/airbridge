@@ -1,0 +1,11 @@
+{
+    "azure_blob_storage_endpoint": "optional_value",
+    "azure_blob_storage_container_name": "required_value",
+    "azure_blob_storage_account_name": "required_value",
+    "azure_blob_storage_account_key": "required_value",
+    "azure_blob_storage_blobs_prefix": "optional_value",
+    "azure_blob_storage_schema_inference_limit": "optional_value",
+    "format": {
+        "format_type": "optional_value"
+    }
+}

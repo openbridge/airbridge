@@ -1,0 +1,14 @@
+{
+    "test_destination": {
+        "test_destination_type": "optional_value",
+        "logging_config": {
+            "logging_type": "optional_value",
+            "max_entry_count": "optional_value",
+            "nth_entry_to_log": "optional_value",
+            "sampling_ratio": "optional_value",
+            "seed": "optional_value"
+        },
+        "millis_per_record": "optional_value",
+        "num_messages": "optional_value"
+    }
+}

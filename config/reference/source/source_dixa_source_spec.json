@@ -1,0 +1,5 @@
+{
+    "api_token": "required_value",
+    "start_date": "required_value",
+    "batch_size": "optional_value"
+}

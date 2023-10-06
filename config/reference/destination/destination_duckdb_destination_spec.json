@@ -1,0 +1,5 @@
+{
+    "motherduck_api_key": "optional_value",
+    "destination_path": "required_value",
+    "schema": "optional_value"
+}

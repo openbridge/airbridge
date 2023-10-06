@@ -1,0 +1,7 @@
+{
+    "credentials": {
+        "client_id": "required_value",
+        "client_secret": "required_value",
+        "refresh_token": "required_value"
+    }
+}

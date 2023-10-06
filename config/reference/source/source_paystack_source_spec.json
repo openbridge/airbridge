@@ -1,0 +1,5 @@
+{
+    "secret_key": "required_value",
+    "start_date": "required_value",
+    "lookback_window_days": "optional_value"
+}

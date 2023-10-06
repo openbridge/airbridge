@@ -1,0 +1,6 @@
+{
+    "subdomain": "required_value",
+    "api_key": "required_value",
+    "custom_reports_fields": "optional_value",
+    "custom_reports_include_default_fields": "optional_value"
+}

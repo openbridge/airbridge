@@ -1,0 +1,5 @@
+{
+    "auth_token": "required_value",
+    "account_id": "required_value",
+    "extension_id": "required_value"
+}

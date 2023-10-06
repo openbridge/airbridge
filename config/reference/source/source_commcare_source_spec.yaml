@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "project_space": "optional_value",
+    "app_id": "required_value",
+    "start_date": "required_value"
+}

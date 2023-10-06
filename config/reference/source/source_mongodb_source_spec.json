@@ -1,0 +1,10 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "database": "required_value",
+    "user": "required_value",
+    "password": "required_value",
+    "auth_source": "required_value",
+    "replica_set": "optional_value",
+    "ssl": "optional_value"
+}

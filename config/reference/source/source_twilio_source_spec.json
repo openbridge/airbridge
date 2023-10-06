@@ -1,0 +1,6 @@
+{
+    "account_sid": "required_value",
+    "auth_token": "required_value",
+    "start_date": "required_value",
+    "lookback_window": "optional_value"
+}

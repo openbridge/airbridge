@@ -1,0 +1,7 @@
+{
+    "api_key": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value",
+    "period": "required_value",
+    "share_type": "optional_value"
+}

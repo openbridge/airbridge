@@ -1,0 +1,7 @@
+{
+    "account_id": "required_value",
+    "client_secret": "required_value",
+    "start_date": "optional_value",
+    "lookback_window_days": "optional_value",
+    "slice_range": "optional_value"
+}

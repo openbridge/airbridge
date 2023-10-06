@@ -1,0 +1,5 @@
+{
+    "start_date": "required_value",
+    "auth_hash": "required_value",
+    "restid": "required_value"
+}

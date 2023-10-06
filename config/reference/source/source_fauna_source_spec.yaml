@@ -1,0 +1,13 @@
+{
+    "domain": "required_value",
+    "port": "required_value",
+    "scheme": "required_value",
+    "secret": "required_value",
+    "collection": {
+        "page_size": "required_value",
+        "deletions": {
+            "deletion_mode": "optional_value",
+            "column": "optional_value"
+        }
+    }
+}

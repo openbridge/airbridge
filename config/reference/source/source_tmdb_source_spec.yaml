@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "movie_id": "required_value",
+    "query": "required_value",
+    "language": "required_value"
+}

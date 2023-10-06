@@ -1,0 +1,12 @@
+{
+    "api_token": "required_value",
+    "domain": "required_value",
+    "email": "required_value",
+    "projects": "optional_value",
+    "start_date": "optional_value",
+    "expand_issue_changelog": "optional_value",
+    "render_fields": "optional_value",
+    "expand_issue_transition": "optional_value",
+    "issues_stream_expand_with": "optional_value",
+    "enable_experimental_streams": "optional_value"
+}

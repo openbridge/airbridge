@@ -1,0 +1,6 @@
+{
+    "user_auth_key": "required_value",
+    "applications": "required_value",
+    "start_date": "required_value",
+    "outcome_names": "required_value"
+}

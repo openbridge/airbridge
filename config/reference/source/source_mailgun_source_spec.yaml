@@ -1,0 +1,5 @@
+{
+    "private_key": "required_value",
+    "domain_region": "optional_value",
+    "start_date": "optional_value"
+}

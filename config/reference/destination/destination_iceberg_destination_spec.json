@@ -1,0 +1,31 @@
+{
+    "catalog_config": {
+        "catalog_type": "optional_value",
+        "hive_thrift_uri": "optional_value",
+        "database": "optional_value",
+        "jdbc_url": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value",
+        "ssl": "optional_value",
+        "catalog_schema": "optional_value",
+        "rest_uri": "optional_value",
+        "rest_credential": "optional_value",
+        "rest_token": "optional_value"
+    },
+    "storage_config": {
+        "storage_type": "optional_value",
+        "access_key_id": "optional_value",
+        "secret_access_key": "optional_value",
+        "s3_warehouse_uri": "optional_value",
+        "s3_bucket_region": "optional_value",
+        "s3_endpoint": "optional_value",
+        "s3_path_style_access": "optional_value",
+        "managed_warehouse_name": "optional_value"
+    },
+    "format_config": {
+        "format": "required_value",
+        "flush_batch_size": "optional_value",
+        "auto_compact": "optional_value",
+        "compact_target_file_size_in_mb": "optional_value"
+    }
+}

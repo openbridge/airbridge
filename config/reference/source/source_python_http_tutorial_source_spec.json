@@ -1,0 +1,5 @@
+{
+    "apikey": "required_value",
+    "start_date": "required_value",
+    "base": "required_value"
+}

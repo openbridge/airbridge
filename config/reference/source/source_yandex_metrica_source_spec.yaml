@@ -1,0 +1,6 @@
+{
+    "auth_token": "required_value",
+    "counter_id": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value"
+}

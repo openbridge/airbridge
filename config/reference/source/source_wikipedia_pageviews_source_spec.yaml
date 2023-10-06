@@ -1,0 +1,9 @@
+{
+    "project": "required_value",
+    "access": "required_value",
+    "agent": "required_value",
+    "article": "required_value",
+    "start": "required_value",
+    "end": "required_value",
+    "country": "required_value"
+}

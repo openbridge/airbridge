@@ -1,0 +1,19 @@
+{
+    "brokers": "required_value",
+    "use_tls": "required_value",
+    "topic_type": "required_value",
+    "topic_tenant": "required_value",
+    "topic_namespace": "required_value",
+    "topic_pattern": "required_value",
+    "topic_test": "optional_value",
+    "producer_name": "optional_value",
+    "producer_sync": "optional_value",
+    "compression_type": "required_value",
+    "send_timeout_ms": "required_value",
+    "max_pending_messages": "required_value",
+    "max_pending_messages_across_partitions": "required_value",
+    "batching_enabled": "required_value",
+    "batching_max_messages": "required_value",
+    "batching_max_publish_delay": "required_value",
+    "block_if_queue_full": "required_value"
+}

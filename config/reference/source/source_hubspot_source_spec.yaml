@@ -1,0 +1,10 @@
+{
+    "start_date": "required_value",
+    "credentials": {
+        "credentials_title": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "refresh_token": "optional_value",
+        "access_token": "optional_value"
+    }
+}

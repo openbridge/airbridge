@@ -1,0 +1,5 @@
+{
+    "access_token": "required_value",
+    "wrike_instance": "required_value",
+    "start_date": "optional_value"
+}

@@ -1,0 +1,10 @@
+{
+    "project_id": "required_value",
+    "topic_id": "required_value",
+    "credentials_json": "required_value",
+    "ordering_enabled": "required_value",
+    "batching_enabled": "required_value",
+    "batching_delay_threshold": "optional_value",
+    "batching_element_count_threshold": "optional_value",
+    "batching_request_bytes_threshold": "optional_value"
+}

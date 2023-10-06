@@ -1,0 +1,11 @@
+{
+    "apiKey": "required_value",
+    "stocksTicker": "required_value",
+    "multiplier": "required_value",
+    "timespan": "required_value",
+    "start_date": "required_value",
+    "end_date": "required_value",
+    "adjusted": "optional_value",
+    "sort": "optional_value",
+    "limit": "optional_value"
+}

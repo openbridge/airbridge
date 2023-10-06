@@ -1,0 +1,6 @@
+{
+    "start_date": "required_value",
+    "api_key": "required_value",
+    "base_url": "optional_value",
+    "events_time_step": "optional_value"
+}

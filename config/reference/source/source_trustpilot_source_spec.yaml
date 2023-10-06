@@ -1,0 +1,12 @@
+{
+    "credentials": {
+        "auth_type": "optional_value",
+        "client_id": "optional_value",
+        "client_secret": "optional_value",
+        "access_token": "optional_value",
+        "token_expiry_date": "optional_value",
+        "refresh_token": "optional_value"
+    },
+    "business_units": "required_value",
+    "start_date": "required_value"
+}

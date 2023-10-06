@@ -14,34 +14,69 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 RETRY_ATTEMPTS = 3
+
 # Define the custom warning class for config validation
 class ConfigValidationWarning(UserWarning):
     pass
 
+def is_url(s):
+    """Check if the string is a URL."""
+    return s.startswith('http://') or s.startswith('https://')
 
-def download_and_parse_spec(url):
-    """Download the spec file from the given URL and return its parsed content."""
-    for _ in range(RETRY_ATTEMPTS):
+
+def get_content(source):
+    """Get content from either a URL or a local file path."""
+    if is_url(source):
+        for _ in range(RETRY_ATTEMPTS):
+            try:
+                response = requests.get(source, timeout=10)
+                response.raise_for_status()
+                return response.text
+            except requests.RequestException:
+                logger.warning(f"Failed to fetch content from {source}. Retrying...")
+        raise RuntimeError(f"Failed to fetch content from {source} after {RETRY_ATTEMPTS} attempts.")
+    else:
+        with open(source, 'r') as file:
+            return file.read()
+        
+def download_and_parse_spec(source):
+    """Download the spec file from the given URL or read from a local path and return its parsed content."""
+    content = None
+    
+    if is_url(source):
+        for _ in range(RETRY_ATTEMPTS):
+            try:
+                response = requests.get(source, timeout=10)
+                response.raise_for_status()
+                content = response.text
+                break
+            except requests.ConnectionError:
+                logger.warning(f"Failed to establish a connection to {source}. Retrying...")
+            except requests.Timeout:
+                logger.warning(f"Request to {source} timed out. Retrying...")
+            except requests.RequestException as e:
+                logger.error(f"Failed to fetch the spec from {source}. Error: {e}")
+                break
+    else:
         try:
-            response = requests.get(url, timeout=10)
-            response.raise_for_status()
-
-            is_yaml = url.endswith((".yaml", ".yml"))
+            with open(source, 'r') as file:
+                content = file.read()
+        except Exception as e:
+            logger.error(f"Failed to read the spec from {source}. Error: {e}")
+            raise RuntimeError(f"Failed to read the spec from {source}.")
+    
+    if content:
+        try:
+            is_yaml = source.endswith((".yaml", ".yml"))
             if is_yaml:
-                return yaml.safe_load(response.text)
+                return yaml.safe_load(content)
             else:
-                return json.loads(response.text)
-        except requests.ConnectionError:
-            logger.warning(f"Failed to establish a connection to {url}. Retrying...")
-        except requests.Timeout:
-            logger.warning(f"Request to {url} timed out. Retrying...")
+                return json.loads(content)
         except (yaml.YAMLError, json.JSONDecodeError):
-            logger.error(f"Failed to parse the spec content from {url}.")
-            break
-        except requests.RequestException as e:
-            logger.error(f"Failed to fetch the spec from {url}. Error: {e}")
-            break
-    raise RuntimeError(f"Failed to fetch and parse the spec from {url} after {RETRY_ATTEMPTS} attempts.")
+            logger.error(f"Failed to parse the spec content from {source}.")
+            raise RuntimeError(f"Failed to parse the spec content from {source}.")
+
+    raise RuntimeError(f"Failed to fetch and parse the spec from {source} after {RETRY_ATTEMPTS} attempts.")
 
 def is_writable(path):
     """Check if the given path is writable."""
@@ -101,40 +136,54 @@ def generate_config_file(fields, spec_title, output_path=None):
         json.dump(fields, file, indent=4)
     print(f"config.json file generated at {output_path}!")
 
-def download_and_save_file(url, output_path):
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
+def download_and_save_file(source, output_path):
+    """Download content from the source (URL or local path) and save it to the output_path."""
+    
+    # Determine if source is a URL or a local file path and get content accordingly
+    if is_url(source):
+        response = requests.get(source, timeout=10)
+        response.raise_for_status()
+        content = response.content
+    else:
+        with open(source, 'rb') as file:
+            content = file.read()
+    
+    # Save the content to the specified output_path
     if os.path.isdir(output_path):
-        output_filename = os.path.basename(url)
+        output_filename = os.path.basename(source)
         output_path = os.path.join(output_path, output_filename)
     with open(output_path, 'wb') as file:
-        file.write(response.content)
-    print(f"File downloaded and saved to {output_path}!")
+        file.write(content)
+    
+    print(f"File saved to {output_path}!")
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate a config.json file based on the provided spec URL.")
-    parser.add_argument('-i', '--input', help='URL to the spec file (either .json or .yaml/.yml)')
-    parser.add_argument('-o', '--output', default=None, help='Output path for the generated config.json file')
-    # Adding the new -c argument
-    parser.add_argument('-c', '--catalog-url', help='URL to a json or yaml file to be downloaded directly')
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="Generate a config.json file based on the provided spec URL or local path.")
     
+    # Updated help description
+    parser.add_argument('-i', '--input', help='URL or local path to the spec file (either .json or .yaml/.yml)')
+    parser.add_argument('-o', '--output', default=None, help='Output path for the generated config.json file')
+    
+    # Updated help description for the -c argument
+    parser.add_argument('-c', '--catalog-url', help='URL or local path to a json or yaml file to be downloaded/saved directly')
+    
+    args = parser.parse_args()
     
     if args.catalog_url:
         download_and_save_file(args.catalog_url, args.output if args.output else ".")
         return
+    
+    # Rest of the logic remains unchanged
+    spec_data = download_and_parse_spec(args.input)
+    if "connectionSpecification" not in spec_data:
+        raise ValueError("The spec doesn't seem to have a 'connectionSpecification' key.")
+    if args.output and not is_writable(args.output):
+        raise PermissionError(f"Do not have write permissions for the path: {args.output}")
+    spec_title = spec_data.get("connectionSpecification", {}).get("title", "default")
+    fields = extract_fields_with_type(spec_data["connectionSpecification"], spec_data["connectionSpecification"].get("required", []))
+    generate_config_file(fields, spec_title, args.output)
 
-        download_and_save_file(args.config_url, args.output if args.output else ".")
-    else:
-        # Rest of the previous logic remains unchanged
-        spec_data = download_and_parse_spec(args.input)
-        if "connectionSpecification" not in spec_data:
-            raise ValueError("The spec doesn't seem to have a 'connectionSpecification' key.")
-        if args.output and not is_writable(args.output):
-            raise PermissionError(f"Do not have write permissions for the path: {args.output}")
-        spec_title = spec_data.get("connectionSpecification", {}).get("title", "default")
-        fields = extract_fields_with_type(spec_data["connectionSpecification"], spec_data["connectionSpecification"].get("required", []))
-        generate_config_file(fields, spec_title, args.output)
 
 if __name__ == "__main__":
     try:

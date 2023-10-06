@@ -1,0 +1,17 @@
+{
+    "auth_type": "optional_value",
+    "aws_environment": "required_value",
+    "region": "required_value",
+    "aws_access_key": "optional_value",
+    "aws_secret_key": "optional_value",
+    "role_arn": "optional_value",
+    "lwa_app_id": "required_value",
+    "lwa_client_secret": "required_value",
+    "refresh_token": "required_value",
+    "replication_start_date": "required_value",
+    "replication_end_date": "optional_value",
+    "period_in_days": "optional_value",
+    "report_options": "optional_value",
+    "max_wait_seconds": "optional_value",
+    "advanced_stream_options": "optional_value"
+}

@@ -1,0 +1,13 @@
+{
+    "auth_type": "optional_value",
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "refresh_token": "required_value",
+    "region": "optional_value",
+    "start_date": "optional_value",
+    "profiles": "optional_value",
+    "marketplace_ids": "optional_value",
+    "state_filter": "optional_value",
+    "look_back_window": "optional_value",
+    "report_record_types": "optional_value"
+}

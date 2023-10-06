@@ -1,0 +1,5 @@
+{
+    "project_id": "required_value",
+    "api_key": "required_value",
+    "infer_timestamp": "optional_value"
+}

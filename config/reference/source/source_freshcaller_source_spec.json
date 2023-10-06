@@ -1,0 +1,7 @@
+{
+    "domain": "required_value",
+    "api_key": "required_value",
+    "requests_per_minute": "optional_value",
+    "start_date": "required_value",
+    "sync_lag_minutes": "optional_value"
+}

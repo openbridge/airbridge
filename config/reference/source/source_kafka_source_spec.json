@@ -1,0 +1,34 @@
+{
+    "MessageFormat": {
+        "deserialization_type": "optional_value",
+        "deserialization_strategy": "optional_value",
+        "schema_registry_url": "optional_value",
+        "schema_registry_username": "optional_value",
+        "schema_registry_password": "optional_value"
+    },
+    "bootstrap_servers": "required_value",
+    "subscription": {
+        "subscription_type": "optional_value",
+        "topic_partitions": "optional_value",
+        "topic_pattern": "optional_value"
+    },
+    "test_topic": "optional_value",
+    "group_id": "optional_value",
+    "max_poll_records": "optional_value",
+    "polling_time": "optional_value",
+    "protocol": {
+        "security_protocol": "optional_value",
+        "sasl_mechanism": "optional_value",
+        "sasl_jaas_config": "optional_value"
+    },
+    "client_id": "optional_value",
+    "enable_auto_commit": "optional_value",
+    "auto_commit_interval_ms": "optional_value",
+    "client_dns_lookup": "optional_value",
+    "retry_backoff_ms": "optional_value",
+    "request_timeout_ms": "optional_value",
+    "receive_buffer_bytes": "optional_value",
+    "auto_offset_reset": "optional_value",
+    "repeated_calls": "optional_value",
+    "max_records_process": "optional_value"
+}

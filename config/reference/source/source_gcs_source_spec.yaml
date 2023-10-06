@@ -1,0 +1,5 @@
+{
+    "gcs_bucket": "required_value",
+    "gcs_path": "required_value",
+    "service_account": "required_value"
+}

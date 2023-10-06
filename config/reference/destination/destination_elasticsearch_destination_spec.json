@@ -1,0 +1,12 @@
+{
+    "endpoint": "required_value",
+    "upsert": "optional_value",
+    "ca_certificate": "optional_value",
+    "authenticationMethod": {
+        "method": "optional_value",
+        "apiKeyId": "optional_value",
+        "apiKeySecret": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value"
+    }
+}

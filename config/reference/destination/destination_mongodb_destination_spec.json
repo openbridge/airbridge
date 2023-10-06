@@ -1,0 +1,17 @@
+{
+    "instance_type": {
+        "instance": "optional_value",
+        "host": "optional_value",
+        "port": "optional_value",
+        "tls": "optional_value",
+        "server_addresses": "optional_value",
+        "replica_set": "optional_value",
+        "cluster_url": "optional_value"
+    },
+    "database": "required_value",
+    "auth_type": {
+        "authorization": "optional_value",
+        "username": "optional_value",
+        "password": "optional_value"
+    }
+}

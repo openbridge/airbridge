@@ -1,0 +1,8 @@
+{
+    "api_key": "required_value",
+    "concept_tags": "optional_value",
+    "count": "optional_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value",
+    "thumbs": "optional_value"
+}

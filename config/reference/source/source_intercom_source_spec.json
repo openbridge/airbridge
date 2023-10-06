@@ -1,0 +1,6 @@
+{
+    "start_date": "required_value",
+    "access_token": "required_value",
+    "client_id": "optional_value",
+    "client_secret": "optional_value"
+}

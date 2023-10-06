@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "query": "required_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value"
+}

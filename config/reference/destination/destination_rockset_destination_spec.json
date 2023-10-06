@@ -1,0 +1,5 @@
+{
+    "api_key": "required_value",
+    "workspace": "required_value",
+    "api_server": "optional_value"
+}

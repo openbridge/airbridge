@@ -1,0 +1,12 @@
+{
+    "api_key": "required_value",
+    "domain": "optional_value",
+    "page_size": "optional_value",
+    "domains": "optional_value",
+    "filter_by": "optional_value",
+    "filter_value": "optional_value",
+    "sort_by": "optional_value",
+    "sort_value": "optional_value",
+    "pages_to_fetch": "optional_value",
+    "region_id": "optional_value"
+}

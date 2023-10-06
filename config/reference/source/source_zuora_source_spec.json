@@ -1,0 +1,8 @@
+{
+    "start_date": "required_value",
+    "window_in_days": "optional_value",
+    "tenant_endpoint": "required_value",
+    "data_query": "required_value",
+    "client_id": "required_value",
+    "client_secret": "required_value"
+}

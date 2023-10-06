@@ -1,0 +1,7 @@
+{
+    "endpoint": "optional_value",
+    "region": "optional_value",
+    "access_key_id": "required_value",
+    "secret_access_key": "required_value",
+    "reserved_attribute_names": "optional_value"
+}

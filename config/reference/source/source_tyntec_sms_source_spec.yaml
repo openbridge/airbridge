@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "to": "required_value",
+    "from": "required_value",
+    "message": "optional_value"
+}

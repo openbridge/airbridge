@@ -1,0 +1,9 @@
+{
+    "queue_url": "required_value",
+    "region": "required_value",
+    "message_delay": "optional_value",
+    "access_key": "optional_value",
+    "secret_key": "optional_value",
+    "message_body_key": "optional_value",
+    "message_group_id": "optional_value"
+}

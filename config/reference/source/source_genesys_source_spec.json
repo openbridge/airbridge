@@ -1,0 +1,6 @@
+{
+    "client_id": "required_value",
+    "client_secret": "required_value",
+    "tenant_endpoint": "required_value",
+    "start_date": "required_value"
+}

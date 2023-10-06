@@ -1,0 +1,6 @@
+{
+    "username": "required_value",
+    "password": "required_value",
+    "legal_entity": "required_value",
+    "playground": "optional_value"
+}

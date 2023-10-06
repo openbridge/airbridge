@@ -1,0 +1,7 @@
+{
+    "server_name": "required_value",
+    "username": "required_value",
+    "password": "required_value",
+    "form_id": "required_value",
+    "start_date": "optional_value"
+}

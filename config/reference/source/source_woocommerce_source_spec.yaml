@@ -1,0 +1,6 @@
+{
+    "api_key": "required_value",
+    "api_secret": "required_value",
+    "shop": "required_value",
+    "start_date": "required_value"
+}

@@ -1,0 +1,8 @@
+{
+    "api_key": "required_value",
+    "query": "required_value",
+    "orientation": "optional_value",
+    "size": "optional_value",
+    "color": "optional_value",
+    "locale": "optional_value"
+}

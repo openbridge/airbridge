@@ -1,0 +1,5 @@
+{
+    "api_subdomain": "required_value",
+    "api_username": "required_value",
+    "api_password": "required_value"
+}

@@ -1,0 +1,20 @@
+{
+    "dataset_name": "required_value",
+    "format": "required_value",
+    "reader_options": "optional_value",
+    "url": "required_value",
+    "provider": {
+        "storage": "optional_value",
+        "user_agent": "optional_value",
+        "service_account_json": "optional_value",
+        "aws_access_key_id": "optional_value",
+        "aws_secret_access_key": "optional_value",
+        "storage_account": "optional_value",
+        "sas_token": "optional_value",
+        "shared_key": "optional_value",
+        "user": "optional_value",
+        "password": "optional_value",
+        "host": "optional_value",
+        "port": "optional_value"
+    }
+}

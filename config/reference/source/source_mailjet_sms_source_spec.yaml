@@ -1,0 +1,5 @@
+{
+    "token": "required_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value"
+}

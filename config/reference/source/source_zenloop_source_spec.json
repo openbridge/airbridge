@@ -1,0 +1,6 @@
+{
+    "api_token": "required_value",
+    "date_from": "optional_value",
+    "survey_id": "optional_value",
+    "survey_group_id": "optional_value"
+}

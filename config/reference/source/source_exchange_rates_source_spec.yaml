@@ -1,0 +1,6 @@
+{
+    "start_date": "required_value",
+    "access_key": "required_value",
+    "base": "optional_value",
+    "ignore_weekends": "optional_value"
+}

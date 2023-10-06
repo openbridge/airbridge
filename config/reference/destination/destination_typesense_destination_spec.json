@@ -1,0 +1,7 @@
+{
+    "api_key": "required_value",
+    "host": "required_value",
+    "port": "optional_value",
+    "protocol": "optional_value",
+    "batch_size": "optional_value"
+}

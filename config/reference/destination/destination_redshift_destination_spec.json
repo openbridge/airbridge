@@ -1,0 +1,24 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "username": "required_value",
+    "password": "required_value",
+    "database": "required_value",
+    "schema": "required_value",
+    "jdbc_url_params": "optional_value",
+    "uploading_method": {
+        "method": "optional_value",
+        "s3_bucket_name": "optional_value",
+        "s3_bucket_path": "optional_value",
+        "s3_bucket_region": "optional_value",
+        "file_name_pattern": "optional_value",
+        "access_key_id": "optional_value",
+        "secret_access_key": "optional_value",
+        "purge_staging_data": "optional_value",
+        "encryption": {
+            "encryption_type": "optional_value",
+            "key_encrypting_key": "optional_value"
+        },
+        "file_buffer_count": "optional_value"
+    }
+}

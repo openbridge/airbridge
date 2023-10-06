@@ -1,0 +1,9 @@
+{
+    "author_year_start": "optional_value",
+    "author_year_end": "optional_value",
+    "copyright": "optional_value",
+    "languages": "optional_value",
+    "search": "optional_value",
+    "sort": "optional_value",
+    "topic": "optional_value"
+}

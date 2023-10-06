@@ -1,0 +1,5 @@
+{
+    "storage_account_name": "required_value",
+    "storage_access_key": "required_value",
+    "storage_endpoint_suffix": "optional_value"
+}

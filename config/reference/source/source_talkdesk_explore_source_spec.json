@@ -1,0 +1,6 @@
+{
+    "start_date": "required_value",
+    "timezone": "optional_value",
+    "auth_url": "required_value",
+    "api_key": "required_value"
+}

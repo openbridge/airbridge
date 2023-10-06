@@ -1,0 +1,10 @@
+{
+    "realm": "required_value",
+    "consumer_key": "required_value",
+    "consumer_secret": "required_value",
+    "token_key": "required_value",
+    "token_secret": "required_value",
+    "object_types": "optional_value",
+    "start_datetime": "required_value",
+    "window_in_days": "optional_value"
+}

@@ -1,0 +1,7 @@
+{
+    "user_token": "required_value",
+    "organization": "required_value",
+    "component_keys": "required_value",
+    "start_date": "optional_value",
+    "end_date": "optional_value"
+}

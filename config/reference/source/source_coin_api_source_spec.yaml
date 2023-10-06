@@ -1,0 +1,9 @@
+{
+    "api_key": "required_value",
+    "environment": "required_value",
+    "symbol_id": "required_value",
+    "period": "required_value",
+    "start_date": "required_value",
+    "end_date": "optional_value",
+    "limit": "optional_value"
+}

@@ -1,0 +1,29 @@
+{
+    "bootstrap_servers": "required_value",
+    "topic_pattern": "required_value",
+    "test_topic": "optional_value",
+    "sync_producer": "optional_value",
+    "protocol": {
+        "security_protocol": "optional_value",
+        "sasl_mechanism": "optional_value",
+        "sasl_jaas_config": "optional_value"
+    },
+    "client_id": "optional_value",
+    "acks": "required_value",
+    "enable_idempotence": "required_value",
+    "compression_type": "required_value",
+    "batch_size": "required_value",
+    "linger_ms": "required_value",
+    "max_in_flight_requests_per_connection": "required_value",
+    "client_dns_lookup": "required_value",
+    "buffer_memory": "required_value",
+    "max_request_size": "required_value",
+    "retries": "required_value",
+    "socket_connection_setup_timeout_ms": "required_value",
+    "socket_connection_setup_timeout_max_ms": "required_value",
+    "max_block_ms": "required_value",
+    "request_timeout_ms": "required_value",
+    "delivery_timeout_ms": "required_value",
+    "send_buffer_bytes": "required_value",
+    "receive_buffer_bytes": "required_value"
+}

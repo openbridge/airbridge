@@ -1,0 +1,8 @@
+{
+    "api_token": "required_value",
+    "team_id": "optional_value",
+    "space_id": "optional_value",
+    "folder_id": "optional_value",
+    "list_id": "optional_value",
+    "include_closed_tasks": "optional_value"
+}

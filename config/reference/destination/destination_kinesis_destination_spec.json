@@ -1,0 +1,8 @@
+{
+    "endpoint": "required_value",
+    "region": "required_value",
+    "shardCount": "required_value",
+    "accessKey": "required_value",
+    "privateKey": "required_value",
+    "bufferSize": "required_value"
+}

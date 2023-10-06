@@ -1,0 +1,7 @@
+{
+    "data_region": "optional_value",
+    "api_key": "required_value",
+    "secret_key": "required_value",
+    "start_date": "required_value",
+    "request_time_range": "optional_value"
+}

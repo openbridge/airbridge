@@ -1,0 +1,18 @@
+{
+    "host": "required_value",
+    "port": "required_value",
+    "connection_data": {
+        "connection_type": "optional_value",
+        "service_name": "optional_value",
+        "sid": "optional_value"
+    },
+    "username": "required_value",
+    "password": "optional_value",
+    "schemas": "optional_value",
+    "jdbc_url_params": "optional_value",
+    "encryption": {
+        "encryption_method": "optional_value",
+        "encryption_algorithm": "optional_value",
+        "ssl_certificate": "optional_value"
+    }
+}

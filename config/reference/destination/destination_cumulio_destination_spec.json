@@ -1,0 +1,5 @@
+{
+    "api_host": "required_value",
+    "api_key": "required_value",
+    "api_token": "required_value"
+}

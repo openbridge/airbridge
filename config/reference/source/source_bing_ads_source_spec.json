@@ -1,0 +1,10 @@
+{
+    "auth_method": "optional_value",
+    "tenant_id": "optional_value",
+    "client_id": "required_value",
+    "client_secret": "optional_value",
+    "refresh_token": "required_value",
+    "developer_token": "required_value",
+    "reports_start_date": "required_value",
+    "lookback_window": "optional_value"
+}

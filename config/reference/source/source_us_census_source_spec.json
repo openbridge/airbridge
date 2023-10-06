@@ -1,0 +1,5 @@
+{
+    "query_params": "optional_value",
+    "query_path": "required_value",
+    "api_key": "required_value"
+}

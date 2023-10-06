@@ -1,0 +1,10 @@
+{
+    "api_key": "required_value",
+    "application_key": "required_value",
+    "query": "optional_value",
+    "start_date": "optional_value",
+    "site": "optional_value",
+    "end_date": "optional_value",
+    "max_records_per_request": "optional_value",
+    "queries": "optional_value"
+}
