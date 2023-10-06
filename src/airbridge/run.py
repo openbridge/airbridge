@@ -24,7 +24,7 @@ from datetime import datetime
 import docker
 from filelock import FileLock, Timeout
 
-from airbridge.state import main as state_main
+from state import main as state_main
 
 
 # Constants
@@ -453,7 +453,7 @@ class AirbyteDockerHandler:
         }
         return volumes
 
-    def _prepare_volumes(self) -> tuple[dict, dict]:
+    def _prepare_volumes(self) -> tuple:
         src_volumes = self._common_volumes("src")
         dst_volumes = self._common_volumes("dst")
         src_volumes["/var/run/docker.sock"] = {
