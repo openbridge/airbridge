@@ -77,7 +77,9 @@ class Scheduler(object):
             return {}
         with open(manifest_loc, "r", encoding="utf-8") as f:
             manifest = json.load(f)
-            states = manifest.get(task_id)
+            states = manifest.get(task_id, [])
+            if not states:
+                return {}
             max_state = {}
             for state in states:
                 if not max_state:
