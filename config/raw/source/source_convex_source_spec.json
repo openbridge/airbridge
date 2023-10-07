@@ -1,56 +1,21 @@
-{
-  "streams": [
-    {
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "stream": {
-        "name": "posts",
-        "json_schema": {
-          "type": "object",
-          "properties": {
-            "_creationTime": { "type": "number" },
-            "_id": {
-              "type": "object",
-              "properties": { "$id": { "type": "string" } }
-            },
-            "author": {
-              "type": "object",
-              "properties": { "$id": { "type": "string" } }
-            },
-            "body": { "type": "string" },
-            "time": { "type": "number" },
-            "_ts": { "type": "number" }
-          }
-        },
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["_ts"],
-        "source_defined_primary_key": [["_id"]]
-      }
-    },
-    {
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "stream": {
-        "name": "users",
-        "json_schema": {
-          "type": "object",
-          "properties": {
-            "_creationTime": { "type": "number" },
-            "_id": {
-              "type": "object",
-              "properties": { "$id": { "type": "string" } }
-            },
-            "name": { "type": "string" },
-            "tokenIdentifier": { "type": "string" },
-            "_ts": { "type": "number" }
-          }
-        },
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["_ts"],
-        "source_defined_primary_key": [["_id"]]
-      }
-    }
-  ]
-}
+documentationUrl: https://docs.airbyte.com/integrations/sources/convex
+connectionSpecification:
+  additionalProperties: true
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Convex Source Spec
+  type: object
+  required:
+    - deployment_url
+    - access_key
+  properties:
+    deployment_url:
+      type: string
+      title: Deployment Url
+      examples:
+        - https://murky-swan-635.convex.cloud
+        - https://cluttered-owl-337.convex.cloud
+    access_key:
+      type: string
+      title: Access Key
+      description: API access key used to retrieve data from Convex.
+      airbyte_secret: true

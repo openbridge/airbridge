@@ -1,248 +1,40 @@
-{
-  "streams": [
-    {
-      "stream": {
-        "name": "subscription",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "event",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["occurred_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["occurred_at"]
-    },
-    {
-      "stream": {
-        "name": "customer",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "contact",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "append"
-    },
-    {
-      "stream": {
-        "name": "invoice",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "order",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "hosted_page",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "item",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "attached_item",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "append"
-    },
-    {
-      "stream": {
-        "name": "item_price",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "payment_source",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "promotional_credit",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["created_at"]
-    },
-    {
-      "stream": {
-        "name": "gift",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "coupon",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "transaction",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "credit_note",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "unbilled_charge",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "quote",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "incremental",
-      "destination_sync_mode": "append",
-      "cursor_field": ["updated_at"]
-    },
-    {
-      "stream": {
-        "name": "quote_line_group",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh", "incremental"],
-        "source_defined_cursor": true,
-        "default_cursor_field": ["updated_at"],
-        "source_defined_primary_key": [["id"]]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "append"
-    }
-  ]
-}
+documentationUrl: https://apidocs.chargebee.com/docs/api
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Chargebee Spec
+  type: object
+  required:
+    - site
+    - site_api_key
+    - start_date
+    - product_catalog
+  additionalProperties: true
+  properties:
+    site_api_key:
+      type: string
+      title: API Key
+      description: Chargebee API Key. See the <a href="https://docs.airbyte.com/integrations/sources/chargebee">docs</a> for more information on how to obtain this key.
+      airbyte_secret: true
+      order: 0
+    site:
+      type: string
+      title: Site
+      description: The site prefix for your Chargebee instance.
+      examples:
+        - "airbyte-test"
+      order: 1
+    start_date:
+      type: string
+      format: date-time
+      title: Start Date
+      description: UTC date and time in the format 2021-01-25T00:00:00Z. Any data before this date will not be replicated.
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$
+      examples:
+        - "2021-01-25T00:00:00Z"
+      order: 2
+    product_catalog:
+      type: string
+      title: Product Catalog
+      description: Product Catalog version of your Chargebee site. Instructions on how to find your version you may find <a href="https://apidocs.chargebee.com/docs/api?prod_cat_ver=2">here</a> under `API Version` section.
+      enum: ["1.0", "2.0"]
+      order: 3

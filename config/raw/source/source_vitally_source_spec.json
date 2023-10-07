@@ -1,67 +1,23 @@
-{
-  "streams": [
-    {
-      "stream": {
-        "name": "accounts",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "admins",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "conversations",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "notes",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "nps_responses",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "tasks",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "users",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    }
-  ]
-}
+documentationUrl: https://docs.airbyte.com/integrations/sources/vitally
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Vitally Spec
+  type: object
+  required:
+    - api_key
+    - status
+  additionalProperties: true
+  properties:
+    api_key:
+      type: string
+      title: API Token
+      description: The API Token for a Vitally account.
+      airbyte_secret: true
+    status:
+      type: string
+      title: Status
+      description: Status of the Vitally accounts. One of the following values; active, churned, activeOrChurned.
+      enum:
+        - active
+        - churned
+        - activeOrChurned

@@ -1,58 +1,19 @@
-{
-  "streams": [
-    {
-      "stream": {
-        "name": "products",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "ideas",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "users",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "idea_categories",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "idea_endorsements",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "idea_comments",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    }
-  ]
-}
+documentationUrl: https://docs.airbyte.com/integrations/sources/aha
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Aha Spec
+  type: object
+  required:
+    - api_key
+    - url
+  additionalProperties: true
+  properties:
+    api_key:
+      type: string
+      description: API Key
+      title: API Bearer Token
+      airbyte_secret: true
+    url:
+      type: string
+      description: URL
+      title: Aha Url Instance

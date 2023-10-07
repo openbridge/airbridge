@@ -1,64 +1,20 @@
-{
-  "streams": [
-    {
-      "stream": {
-        "name": "deliverystats",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"],
-        "source_defined_primary_key": [["Name"]]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "message-streams",
-        "json_schema": {},
-        "source_defined_primary_key": [["ID"]],
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "servers",
-        "json_schema": {},
-        "source_defined_primary_key": [["ID"]],
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "messages",
-        "json_schema": {},
-        "source_defined_primary_key": [["MessageID"]],
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "domains",
-        "json_schema": {},
-        "source_defined_primary_key": [["ID"]],
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "bounces",
-        "json_schema": {},
-        "source_defined_primary_key": [["ID"]],
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    }
-  ]
-}
+documentationUrl: https://docsurl.com
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Postmarkapp Spec
+  type: object
+  required:
+    - X-Postmark-Server-Token
+    - X-Postmark-Account-Token
+  additionalProperties: true
+  properties:
+    X-Postmark-Server-Token:
+      title: X-Postmark-Server-Token
+      type: string
+      description: API Key for server
+      airbyte_secret: true
+    X-Postmark-Account-Token:
+      title: X-Postmark-Account-Token
+      type: string
+      description: API Key for account
+      airbyte_secret: true

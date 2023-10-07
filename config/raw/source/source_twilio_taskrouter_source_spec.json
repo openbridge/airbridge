@@ -1,22 +1,20 @@
-{
-  "streams": [
-    {
-      "stream": {
-        "name": "workspaces",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    },
-    {
-      "stream": {
-        "name": "workers",
-        "json_schema": {},
-        "supported_sync_modes": ["full_refresh"]
-      },
-      "sync_mode": "full_refresh",
-      "destination_sync_mode": "overwrite"
-    }
-  ]
-}
+documentationUrl: https://docs.airbyte.io/integrations/sources/twilio-taskrouter
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Twilio Taskrouter Spec
+  type: object
+  required:
+    - account_sid
+    - auth_token
+  additionalProperties: true
+  properties:
+    account_sid:
+      title: Account SID
+      type: string
+      description: Twilio Account ID
+      airbyte_secret: true
+    auth_token:
+      type: string
+      description: Twilio Auth Token
+      airbyte_secret: true
+      title: Auth Token
