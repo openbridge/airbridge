@@ -128,27 +128,42 @@ class Scheduler(object):
         logger.debug(f"{task['name']} stderr: {result.stderr}")
         return result.returncode
     
-    def _generate_cw_log_events(self, log_file):
+    def _generate_cw_log_events(self, ts, log_file):
         with open(log_file, 'r', encoding='utf8') as f:
+            logger.info("Reading log file %s", log_file)
             log_events = []
-            now = time.time()
             for line in f:
                 log_events.append({
-                    'timestamp': now,
+                    'timestamp': ts*1000,
                     'message': line
                 })
+        logger.info("last event: %s", log_events[-1])
         return log_events        
 
-    def upload_logs(self, log_group_name, log_file_path):
-        log_file = f"{log_file_path}/out.log"
-        if not os.path.exists(log_file):
-            logger.info("Log file %s not found", log_file)
+    def upload_logs(self, name, log_file_path):
+        log_group_name = 'airbridge-' + name
+        if not os.path.exists(log_file_path):
+            logger.info("Log file %s not found", log_file_path)
             return
-        log_events = self._generate_cw_log_events(log_file)
-        cw = boto3.client('logs')
+        logger.debug("Generating CW log events from %s", log_file_path)
+        now = int(time.time())
+        log_events = self._generate_cw_log_events(now, log_file_path)
+        cw = boto3.client('logs', region_name='us-east-1')
+        logger.info("Attempting to create log group %s", log_group_name)
+        try:
+            cw.create_log_group(logGroupName=log_group_name)
+        except cw.exceptions.ResourceAlreadyExistsException:
+            pass
+        # TODO: Create log stream if it doesn't exist
+        logger.info("Attempting to create log stream %s", log_group_name)
+        try:
+            cw.create_log_stream(logGroupName=log_group_name, logStreamName=log_file_path.split('/')[-1].split('.')[0] + '-' + str(now))
+        except cw.exceptions.ResourceAlreadyExistsException:
+            pass
+        logger.info("Submitting log group events")
         response = cw.put_log_events(
             logGroupName=log_group_name,
-            logStreamName='out.log',
+            logStreamName=log_file_path.split('/')[-1].split('.')[0] + '-' + str(now),
             logEvents=log_events
         )
         logger.info("CW response: %s", response)
@@ -184,7 +199,7 @@ class Scheduler(object):
                     self.execute_task(task, state_loc)
                     # Upload logs
                     logger.debug("Uploading logs")
-                    self.upload_logs(task['id'], f"{self.config['dirs']['output']}/{task['id']}")
+                    self.upload_logs(name=task['id'], log_file_path=f"{self.config['dirs']['output']}/{task['id']}/out.log")
                     # Update last run time
                     logger.debug("Updating last run time")
                     self.cursor.execute("INSERT INTO task_run_time VALUES (?, ?)", (task.get('name'), current_time))
@@ -193,7 +208,7 @@ class Scheduler(object):
                 else:
                     logger.debug("Task not scheduled to run")
         logger.debug("OB Airbyte task runner finished")
-        self.upload_logs('airbridge-scheduler', f"{self.config['dirs']['base']}/scheduler.log")
+        self.upload_logs('scheduler', f"{self.config['dirs']['base']}/scheduler.log")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
