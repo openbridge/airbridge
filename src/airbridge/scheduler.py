@@ -137,7 +137,6 @@ class Scheduler(object):
                     'timestamp': ts*1000,
                     'message': line
                 })
-        logger.info("last event: %s", log_events[-1])
         return log_events        
 
     def upload_logs(self, name, log_file_path):
@@ -149,13 +148,11 @@ class Scheduler(object):
         now = int(time.time())
         log_events = self._generate_cw_log_events(now, log_file_path)
         cw = boto3.client('logs', region_name='us-east-1')
-        logger.info("Attempting to create log group %s", log_group_name)
+        # Create log group/stream if it doesn't exist
         try:
             cw.create_log_group(logGroupName=log_group_name)
         except cw.exceptions.ResourceAlreadyExistsException:
             pass
-        # TODO: Create log stream if it doesn't exist
-        logger.info("Attempting to create log stream %s", log_group_name)
         try:
             cw.create_log_stream(logGroupName=log_group_name, logStreamName=log_file_path.split('/')[-1].split('.')[0] + '-' + str(now))
         except cw.exceptions.ResourceAlreadyExistsException:
