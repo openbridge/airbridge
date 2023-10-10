@@ -141,18 +141,18 @@ class Scheduler(object):
 
     def upload_logs(self, log_group_name, log_file_path):
         log_file = f"{log_file_path}/out.log"
-        # TODO: Find data file
-        data_file = f"{log_file_path}/data.json"
         if not os.path.exists(log_file):
             logger.info("Log file %s not found", log_file)
-        else:
-            log_events = self._generate_cw_log_events(log_file)
-            cw = boto3.client('logs')
-            response = cw.put_log_events(
-                logGroupName=log_group_name,
-                logStreamName='run-',
-                logEvents=log_events
-            )
+            return
+        log_events = self._generate_cw_log_events(log_file)
+        cw = boto3.client('logs')
+        response = cw.put_log_events(
+            logGroupName=log_group_name,
+            logStreamName='out.log',
+            logEvents=log_events
+        )
+        logger.info("CW response: %s", response)
+        logger.info("Uploaded %d log events to %s", len(log_events), log_group_name)
 
     def run(self):
         logger.info("Initializing OB Airbyte task runner")
