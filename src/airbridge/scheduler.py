@@ -31,8 +31,7 @@ TASK_COMMAND = """sudo python3 {{ base }}/run.py \
                     -d {{ configs }}/{{ id }}/destination.json \
                     -c {{ configs }}/{{ id }}/catalog.json \
                     {% if state_loc -%}-t {{ state_loc }} \
-                    {% endif -%}-o {{ output }}/{{ id }} \
-                    >> {{ output }}/{{ id }}/out.log """
+                    {% endif -%}-o {{ output }}/{{ id }}"""
 
 
 class Scheduler(object):
@@ -128,6 +127,32 @@ class Scheduler(object):
         logger.debug(f"{task['name']} stdout: {result.stdout}")
         logger.debug(f"{task['name']} stderr: {result.stderr}")
         return result.returncode
+    
+    def _generate_cw_log_events(self, log_file):
+        with open(log_file, 'r', encoding='utf8') as f:
+            log_events = []
+            now = time.time()
+            for line in f:
+                log_events.append({
+                    'timestamp': now,
+                    'message': line
+                })
+        return log_events        
+
+    def upload_logs(self, log_group_name, log_file_path):
+        log_file = f"{log_file_path}/out.log"
+        # TODO: Find data file
+        data_file = f"{log_file_path}/data.json"
+        if not os.path.exists(log_file):
+            logger.info("Log file %s not found", log_file)
+        else:
+            log_events = self._generate_cw_log_events(log_file)
+            cw = boto3.client('logs')
+            response = cw.put_log_events(
+                logGroupName=log_group_name,
+                logStreamName='run-',
+                logEvents=log_events
+            )
 
     def run(self):
         logger.info("Initializing OB Airbyte task runner")
@@ -157,7 +182,8 @@ class Scheduler(object):
                         logger.debug("Task already running")
                         return 2
                     self.execute_task(task, state_loc)
-
+                    # Upload logs
+                    self.upload_logs(task['id'], f"{self.config['dirs']['output']}/{task['id']}")
                     # Update last run time
                     logger.debug("Updating last run time")
                     self.cursor.execute("INSERT INTO task_run_time VALUES (?, ?)", (task.get('name'), current_time))

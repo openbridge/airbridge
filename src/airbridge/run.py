@@ -18,6 +18,7 @@ import sys
 import time
 import uuid
 from dataclasses import dataclass
+
 from datetime import datetime
 
 # Related third-party imports
@@ -830,6 +831,12 @@ def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
 
     # Generate a job ID if not provided
     args.job = args.job or f"jobid-{src_runtime}"
+    
+    # Set the log file path
+    fh = logging.FileHandler(f"{args.output_path}/out.log", "a")
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
 
     return args
 
