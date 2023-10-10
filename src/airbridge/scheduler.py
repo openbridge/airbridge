@@ -183,6 +183,7 @@ class Scheduler(object):
                         return 2
                     self.execute_task(task, state_loc)
                     # Upload logs
+                    logger.debug("Uploading logs")
                     self.upload_logs(task['id'], f"{self.config['dirs']['output']}/{task['id']}")
                     # Update last run time
                     logger.debug("Updating last run time")
@@ -192,6 +193,7 @@ class Scheduler(object):
                 else:
                     logger.debug("Task not scheduled to run")
         logger.debug("OB Airbyte task runner finished")
+        self.upload_logs('airbridge-scheduler', f"{self.config['dirs']['base']}/scheduler.log")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
