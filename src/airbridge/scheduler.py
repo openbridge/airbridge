@@ -5,6 +5,7 @@ import argparse
 import os
 import sys
 import logging
+from datetime import datetime
 
 from jinja2 import Template
 import sqlite3
@@ -20,7 +21,8 @@ logger.setLevel(logging.DEBUG)
 
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+formatter.datefmt = "%Y-%m-%d %H:%M:%S"
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
@@ -129,12 +131,20 @@ class Scheduler(object):
         return result.returncode
     
     def _generate_cw_log_events(self, ts, log_file):
+        timestamp = ts
         with open(log_file, 'r', encoding='utf8') as f:
             logger.info("Reading log file %s", log_file)
             log_events = []
             for line in f:
+                try:
+                    dt_str = line.split('-')[0].strip()[0]
+                    dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
+                    timestamp = int(dt.timestamp())
+                    line = line.split('-')[1].strip()
+                except Exception:
+                    pass
                 log_events.append({
-                    'timestamp': ts*1000,
+                    'timestamp': timestamp*1000,
                     'message': line
                 })
         return log_events        
