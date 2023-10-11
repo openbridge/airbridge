@@ -1,6 +1,6 @@
 # Airbridge: Lightweight Airbyte Data Flows
 
-We wanted a clean, no-frills, open source solution that focused solely on the core Airbridge source and data connectors. That is it.
+We wanted a clean, no-frills, open source solution that focused solely on the core Airbyte source and data connectors. That is it.
 
 Not finding a solution to accomplish this goal, we decided to pull something that fits—introducing Airbridge.
 
