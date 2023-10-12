@@ -37,12 +37,12 @@ TASK_COMMAND = """sudo python3 {{ base }}/run.py \
 
 
 class Scheduler(object):
-    def __init__(self, s3_config_path):
+    def __init__(self, s3_config_path, db_file_loc):
         self.s3_client = boto3.client('s3')
         # Download config from S3
         self.config = self.get_config(s3_config_path)
         self.tasks = self.config.get('tasks')
-        self.conn = sqlite3.connect(os.getcwd() + '/scheduler.db')
+        self.conn = sqlite3.connect(db_file_loc)
         self.conn.row_factory = sqlite3.Row  # Return dict instead of tuple
         self.cursor = self.conn.cursor()
         self.cursor.execute("CREATE TABLE IF NOT EXISTS task_run_time (name TEXT, time INTEGER)")
@@ -137,24 +137,23 @@ class Scheduler(object):
             log_events = []
             for line in f:
                 try:
-                    dt_str = line.split('-')[0].strip()[0]
+                    dt_str = line.split(' - ')[0].strip()
+                    line = ' - '.join(line.split(' - ')[1:])
                     dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
                     timestamp = int(dt.timestamp())
-                    line = line.split('-')[1].strip()
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug("Failed to parse timestamp from log: %s", str(e))
                 log_events.append({
                     'timestamp': timestamp*1000,
                     'message': line
                 })
-        return log_events        
+        return log_events
 
     def upload_logs(self, name, log_file_path):
         log_group_name = 'airbridge-' + name
         if not os.path.exists(log_file_path):
             logger.info("Log file %s not found", log_file_path)
             return
-        logger.debug("Generating CW log events from %s", log_file_path)
         now = int(time.time())
         log_events = self._generate_cw_log_events(now, log_file_path)
         cw = boto3.client('logs', region_name='us-east-1')
@@ -173,7 +172,6 @@ class Scheduler(object):
             logStreamName=log_file_path.split('/')[-1].split('.')[0] + '-' + str(now),
             logEvents=log_events
         )
-        logger.info("CW response: %s", response)
         logger.info("Uploaded %d log events to %s", len(log_events), log_group_name)
 
     def run(self):
@@ -220,5 +218,6 @@ class Scheduler(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', help='S3 path to config file', required=True)
+    parser.add_argument('--db', help='Path to sqlite3 database file', required=True)
     args = parser.parse_args()
-    Scheduler(args.config).run()
+    Scheduler(args.config, args.db).run()

@@ -833,8 +833,9 @@ def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
     args.job = args.job or f"jobid-{src_runtime}"
     
     # Set the log file path
-    fh = logging.FileHandler(f"{args.output_path}/out.log", "a")
+    fh = logging.FileHandler(f"{args.output_path}/out.log", "w")
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    formatter.datefmt = "%Y-%m-%d %H:%M:%S"
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
