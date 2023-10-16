@@ -138,14 +138,15 @@ class Scheduler(object):
             for line in f:
                 try:
                     dt_str = line.split(' - ')[0].strip()
-                    line = ' - '.join(line.split(' - ')[1:])
+                    l = ' - '.join(line.split(' - ')[1:])
                     dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
                     timestamp = int(dt.timestamp())
                 except Exception as e:
                     logger.debug("Failed to parse timestamp from log: %s", str(e))
+                    l = line.strip()
                 log_events.append({
                     'timestamp': timestamp*1000,
-                    'message': line
+                    'message': l
                 })
         return log_events
 
@@ -156,7 +157,7 @@ class Scheduler(object):
             return
         now = int(time.time())
         log_events = self._generate_cw_log_events(now, log_file_path)
-        cw = boto3.client('logs', region_name='us-east-1')
+        cw = boto3.client('logs', region_name=os.getenv('AWS_REGION', 'us-east-1'))
         # Create log group/stream if it doesn't exist
         try:
             cw.create_log_group(logGroupName=log_group_name)
