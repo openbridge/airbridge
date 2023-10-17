@@ -137,6 +137,8 @@ class Scheduler(object):
             log_events = []
             for line in f:
                 try:
+                    if not line:
+                        continue
                     dt_str = line.split(' - ')[0].strip()
                     l = ' - '.join(line.split(' - ')[1:])
                     dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
