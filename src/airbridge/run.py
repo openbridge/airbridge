@@ -233,6 +233,7 @@ class StateHandler:
             state_main(
                 src_runtime,
                 self.output_path,
+                "/home/ec2-user/airbridge",  # TODO: Parameterize this
                 self.airbyte_src_image,
                 self.job_id,
                 self.source_config_hash,

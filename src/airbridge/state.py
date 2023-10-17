@@ -194,17 +194,15 @@ class ManifestUtility:
             ) from exc
 
     @staticmethod
-    def save_manifest_content(manifest_content: dict) -> None:
+    def save_manifest_content(manifest_path, manifest_content: dict) -> None:
         """Saves the provided manifest content into the manifest file, merging
         with existing content if present."""
 
-        manifest_dir = os.getcwd()
-
         # Ensure the manifest directory exists
-        if not os.path.exists(manifest_dir):
-            os.makedirs(manifest_dir)
+        if not os.path.exists(manifest_path):
+            os.makedirs(manifest_path)
 
-        manifest_file_path = os.path.join(manifest_dir, "manifest.json")
+        manifest_file_path = os.path.join(manifest_path, "manifest.json")
 
         # Initialize an empty dictionary for existing manifest content
         existing_manifest_content = {}
@@ -245,7 +243,7 @@ class ManifestUtility:
         except PermissionError:
             logging.error(
                 "Permission denied when trying to access the directory %s or file %s.",
-                manifest_dir,
+                manifest_path,
                 manifest_file_path,
             )
             raise
@@ -318,12 +316,9 @@ class AirbyteStateHandler:
                 job_id=self.job_id,
                 data_file_path=filename,  # Passing the filename as the data_file_path
             )
-            manifest_base = self.airbyte_src_image
-            manifest_dir = os.path.join(
-                self.manifest_base_path, "states", manifest_base
-            )
+            manifest_dir = self.manifest_base_path
 
-            ManifestUtility.save_manifest_content(manifest_content)
+            ManifestUtility.save_manifest_content(self.manifest_base_path, manifest_content)
             logging.debug("Saved manifest content to: %s", manifest_dir)
 
             return final_state
@@ -406,7 +401,7 @@ def parse_arguments(
 
 
 def process_airbyte_state(
-    src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=None
+    src_runtime, manifest_base_path, input_path, airbyte_src_image, job_id=None, config_hash=None
 ):
     """Process the Airbyte state given the input path, Airbyte source image,
     and an optional job ID.
@@ -417,7 +412,7 @@ def process_airbyte_state(
         job_id (str, optional): Job ID. Defaults to None.
     """
     handler = AirbyteStateHandler(
-        manifest_base_path=input_path,
+        manifest_base_path=manifest_base_path,
         output_path=input_path,
         airbyte_src_image=airbyte_src_image,
         job_id=job_id,
@@ -428,12 +423,13 @@ def process_airbyte_state(
 
 
 def main(
-    src_runtime, input_path, airbyte_src_image, job_id=None, config_hash=None
+    src_runtime, input_path, manifest_base_path, airbyte_src_image, job_id=None, config_hash=None
 ):
     """Main execution function."""
     args = {
         "src_runtime": src_runtime,
         "input_path": input_path,
+        "manifest_base_path": manifest_base_path,
         "airbyte_src_image": airbyte_src_image,
         "job_id": job_id,
         "config_hash": config_hash,
