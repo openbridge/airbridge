@@ -39,9 +39,13 @@ handle_error() {
 #   None
 set_environment_variable() {
     local env_file="/etc/environment"
+    local profile_file="/etc/profile"
     local backup_file="${env_file}.bak"
     local key="$1"
     local value="$2"
+
+    # Set the environment variable for the currently running script
+    export "${key}=${value}"
 
     # Check if the environment file exists and is writable
     if [[ ! -w "${env_file}" ]]; then
@@ -51,13 +55,20 @@ set_environment_variable() {
     # Backup the original environment file
     cp "${env_file}" "${backup_file}"
 
-    # Check if the key already exists in the file
+    # Check if the key already exists in the environment file
     if grep -q "^${key}=" "${env_file}"; then
         sed -i "s|^${key}=.*|${key}=\"${value}\"|" "${env_file}"
     else
         echo "${key}=\"${value}\"" >>"${env_file}"
     fi
+
+    # Also add to /etc/profile for persistent exporting to new sessions
+    if ! grep -q "export ${key}=" "${profile_file}"; then
+        echo "export ${key}=\"${value}\"" >> "${profile_file}"
+    fi
 }
+
+
 
 
 # Update system packages.
@@ -312,6 +323,8 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
+source /etc/environment
+
 # Directory constants
 readonly LOG_FILE="\${AIRBRIDGE_TARGET}/scheduler.log"
 readonly PY_SCRIPT="\${AIRBRIDGE_TARGET}/scheduler.py"
@@ -358,7 +371,7 @@ create_backup_script() {
 #!/bin/bash
 
 # This script backs up files from a local directory to an S3 bucket.
-
+source /etc/environment
 # Variables
 LOCAL_DIR="${AIRBRIDGE_TARGET}/output"
 S3_BUCKET="s3://${S3BUCKET}"
