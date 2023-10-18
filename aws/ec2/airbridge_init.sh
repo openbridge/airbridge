@@ -244,39 +244,40 @@ setup_aws_logs() {
 # Returns:
 #   None
 setup_s3_bucket() {
+    # If S3BUCKET is not set, attempt to create one
     if [[ -z "${S3BUCKET}" ]]; then
-        log "S3BUCKET environment variable not set. Attempting to create a new bucket."
+        log "S3BUCKET environment variable not set. Attempting to create or use a default bucket."
+        
         local -r INSTANCE_ID="$(get_instance_id)"
         local -r REGION_ID="$(get_region)"
-        local -r BUCKET_NAME="airbridge-${INSTANCE_ID}"
+        S3BUCKET="airbridge-${INSTANCE_ID}"
 
         # Check if the S3 bucket exists
-        if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" &>/dev/null; then
+        if ! aws s3api head-bucket --bucket "${S3BUCKET}" &>/dev/null; then
             # Create the S3 bucket
-            aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${REGION_ID}" || handle_error "Failed to create S3 bucket."
+            aws s3api create-bucket --bucket "${S3BUCKET}" --region "${REGION_ID}" || handle_error "Failed to create S3 bucket ${S3BUCKET}."
+            log "Bucket ${S3BUCKET} created successfully."
         else
-            log "Bucket ${BUCKET_NAME} already exists. Continue..."
+            log "Bucket ${S3BUCKET} already exists. Continuing..."
         fi
 
-        export S3BUCKET="${BUCKET_NAME}"
+        # Set the S3BUCKET environment variable
+        set_environment_variable "S3BUCKET" "${S3BUCKET}"
     fi
 
-    # Double-check that the specified bucket exists
+    # Double-check that the specified bucket exists or is accessible
     if ! aws s3api head-bucket --bucket "${S3BUCKET}" &>/dev/null; then
         handle_error "Bucket ${S3BUCKET} does not exist or you don't have permission to access it."
     fi
 
-    # Set the S3BUCKET environment variable
-    set_environment_variable "S3BUCKET" "${S3BUCKET}"
-
     # Construct and set the AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH environment variable
-    local AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH="s3://${S3BUCKET}/configs/scheduler.json"
+    AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH="s3://${S3BUCKET}/configs/scheduler.json"
     set_environment_variable "AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH" "${AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH}"
 
     # Export the variable for current shell
     export AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH
-
 }
+
 
 # Creates the scheduler script that will be run using flock and cron.
 # Globals:
