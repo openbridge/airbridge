@@ -186,7 +186,6 @@ git_clone_and_setup() {
     local -r TARGET_DIR="/home/ec2-user/airbridge"
     
     # Export and set environment variable
-    export AIRBRIDGE_TARGET="$TARGET_DIR"
     set_environment_variable "AIRBRIDGE_TARGET" "${AIRBRIDGE_TARGET}"
 
     # Ensure git is available
@@ -209,6 +208,8 @@ git_clone_and_setup() {
     touch "${AIRBRIDGE_TARGET}/scheduler.log" || handle_error "Failed to create scheduler.log file."
     find "${AIRBRIDGE_TARGET}" -type d -exec chmod 755 {} \; || handle_error "Failed to set directory permissions."
     find "${AIRBRIDGE_TARGET}" -type f -exec chmod 644 {} \; || handle_error "Failed to set file permissions."
+
+    export AIRBRIDGE_TARGET
 }
 
 
@@ -276,6 +277,7 @@ setup_s3_bucket() {
 
     # Export the variable for current shell
     export AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH
+    export S3BUCKET
 }
 
 
