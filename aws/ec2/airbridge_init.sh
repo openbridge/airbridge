@@ -187,6 +187,7 @@ git_clone_and_setup() {
     
     # Export and set environment variable
     set_environment_variable "AIRBRIDGE_TARGET" "${AIRBRIDGE_TARGET}"
+    export AIRBRIDGE_TARGET
 
     # Ensure git is available
     if ! command -v git &> /dev/null; then
