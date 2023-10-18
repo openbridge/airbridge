@@ -186,8 +186,8 @@ git_clone_and_setup() {
     local -r TARGET_DIR="/home/ec2-user/airbridge"
     
     # Export and set environment variable
-
     AIRBRIDGE_TARGET=${TARGET_DIR}
+    set_environment_variable "AIRBRIDGE_TARGET" "${TARGET_DIR}"
     export AIRBRIDGE_TARGET
 
     # Ensure git is available
@@ -274,6 +274,7 @@ setup_s3_bucket() {
 
     # Construct and set the AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH environment variable
     AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH="s3://${S3BUCKET}/configs/scheduler.json"
+    set_environment_variable "S3BUCKET" "${S3BUCKET}"
     set_environment_variable "AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH" "${AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH}"
 
     # Export the variable for current shell
