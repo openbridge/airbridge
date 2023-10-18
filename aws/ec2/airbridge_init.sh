@@ -186,7 +186,8 @@ git_clone_and_setup() {
     local -r TARGET_DIR="/home/ec2-user/airbridge"
     
     # Export and set environment variable
-    set_environment_variable "AIRBRIDGE_TARGET" "${AIRBRIDGE_TARGET}"
+
+    AIRBRIDGE_TARGET=${TARGET_DIR}
     export AIRBRIDGE_TARGET
 
     # Ensure git is available
@@ -210,7 +211,6 @@ git_clone_and_setup() {
     find "${AIRBRIDGE_TARGET}" -type d -exec chmod 755 {} \; || handle_error "Failed to set directory permissions."
     find "${AIRBRIDGE_TARGET}" -type f -exec chmod 644 {} \; || handle_error "Failed to set file permissions."
 
-    export AIRBRIDGE_TARGET
 }
 
 
