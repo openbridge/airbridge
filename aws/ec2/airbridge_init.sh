@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # This script sets up an EC2 instance for airbridge.
 # Project website: https://github.com/openbridge/airbridge
