@@ -138,7 +138,7 @@ class Scheduler(object):
             last_dt = None
             for line in f:
                 try:
-                    if not line:
+                    if not line or line == '':
                         continue
                     dt_str = line.split(' - ')[0].strip()
                     l = ' - '.join(line.split(' - ')[1:])
