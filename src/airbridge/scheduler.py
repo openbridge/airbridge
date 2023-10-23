@@ -146,10 +146,11 @@ class Scheduler(object):
                 except Exception as e:
                     logger.debug("Failed to parse timestamp from log: %s", str(e))
                     l = line.strip()
-                log_events.append({
-                    'timestamp': timestamp*1000,
-                    'message': l
-                })
+                if l:
+                    log_events.append({
+                        'timestamp': timestamp*1000,
+                        'message': l
+                    })
         return log_events
 
     def upload_logs(self, name, log_file_path):
