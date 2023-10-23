@@ -135,22 +135,24 @@ class Scheduler(object):
         with open(log_file, 'r', encoding='utf8') as f:
             logger.info("Reading log file %s", log_file)
             log_events = []
+            last_dt = None
             for line in f:
                 try:
                     if not line:
                         continue
                     dt_str = line.split(' - ')[0].strip()
                     l = ' - '.join(line.split(' - ')[1:])
-                    dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
-                    timestamp = int(dt.timestamp())
+                    last_dt = datetime.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
                 except Exception as e:
                     logger.debug("Failed to parse timestamp from log: %s", str(e))
                     l = line.strip()
+                timestamp = int(last_dt.timestamp())
                 if l:
                     log_events.append({
                         'timestamp': timestamp*1000,
                         'message': l
                     })
+        log_events = sorted(log_events, key=lambda x: x['timestamp'])
         return log_events
 
     def upload_logs(self, name, log_file_path):
