@@ -326,27 +326,23 @@ set -e
 source /etc/environment
 
 # Directory constants
-readonly LOG_FILE="${AIRBRIDGE_TARGET}/scheduler.log"
-readonly PY_SCRIPT="${AIRBRIDGE_TARGET}/scheduler.py"
-readonly DB_PATH="${AIRBRIDGE_TARGET}/scheduler.db"
-readonly CONFIG_PATH="s3://airbridge-my-company-bucket-01/configs/scheduler.json"
+readonly LOG_FILE="\${AIRBRIDGE_TARGET}/scheduler.log"
+readonly PY_SCRIPT="\${AIRBRIDGE_TARGET}/scheduler.py"
+readonly DB_PATH="\${AIRBRIDGE_TARGET}/scheduler.db"
+readonly CONFIG_PATH="${AIRBRIDGE_SCHEDULER_CONFIG_S3_PATH}"
 
 # Change to the script's directory
-cd "${AIRBRIDGE_TARGET}" || {
-  echo "Error: Failed to change directory to ${AIRBRIDGE_TARGET}" >&2
+cd "\${AIRBRIDGE_TARGET}" || {
+  echo "Error: Failed to change directory to \${AIRBRIDGE_TARGET}" >&2
   exit 1
 }
 
-# Delete the existing scheduler.log file
-rm "$LOG_FILE" || true
-touch "$LOG_FILE"
-
 # Execute the Python script and log with timestamp
 {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - INFO - Starting scheduler script"
-  python3 "$PY_SCRIPT" --config="$CONFIG_PATH" --db="$DB_PATH"
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - INFO - Finished scheduler script"
-} >> "$LOG_FILE" 2>&1
+  echo "\$(date '+%Y-%m-%d %H:%M:%S') - INFO - Starting scheduler script"
+  python3 "\$PY_SCRIPT" --config="\$CONFIG_PATH" --db="\$DB_PATH"
+  echo "\$(date '+%Y-%m-%d %H:%M:%S') - INFO - Finished scheduler script"
+} >> "\$LOG_FILE" 2>&1
 EOF
 
   # Make the scheduler script executable
