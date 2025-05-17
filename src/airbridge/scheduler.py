@@ -1,6 +1,7 @@
 import json
 import time
 import subprocess
+import shlex
 import argparse
 import os
 import sys
@@ -125,7 +126,10 @@ class Scheduler(object):
         # Render command
         command = self._render_task_cmd(task, state_loc)
         logger.debug(f"Running command: {command}")
-        result = subprocess.run(command, check=True, shell=True, capture_output=True, text=True)
+        # Use shlex.split to safely parse the command string into a list of
+        # arguments to avoid invoking the shell with unsanitised input.
+        command_args = shlex.split(command)
+        result = subprocess.run(command_args, check=True, capture_output=True, text=True)
         logger.debug(f"{task['name']} stdout: {result.stdout}")
         logger.debug(f"{task['name']} stderr: {result.stderr}")
         return result.returncode
