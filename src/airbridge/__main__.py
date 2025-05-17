@@ -1,4 +1,4 @@
-from airbridge.run import execute_main_logic
+from airbridge.run import main
 
 if __name__ == "__main__":
-    execute_main_logic()
+    main()

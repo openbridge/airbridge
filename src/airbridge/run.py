@@ -89,10 +89,9 @@ class LockManager:
         self._file_lock = FileLock(self.lock_path, timeout=DEFAULT_TIMEOUT)
 
     def _get_default_lock_file_path(self) -> str:
-        """Returns the default lock file path based on the location of this
-        script.
+        """Return the default lock file path based on this script's location.
 
-        Returns:doc
+        Returns:
             str: Path to the default lock file.
         """
         return os.path.join(
