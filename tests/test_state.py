@@ -62,20 +62,22 @@ def test_init(state_handler):
 
 def test_run_state_script_success(state_handler):
     with patch("airbridge.run.state_main", return_value=None):  # Adjust this to the actual import path of state_main
-        assert state_handler.run_state_script() == True
+        assert state_handler.run_state_script(123) == True
 
 def test_run_state_script_failure(state_handler):
     with patch("airbridge.run.state_main", side_effect=Exception("Test exception")):  # Adjust this to the actual import path of state_main
-        assert state_handler.run_state_script() == False
+        assert state_handler.run_state_script(123) == False
 
 def test_execute_success(state_handler):
-    with patch.object(state_handler, "run_state_script", return_value=True):
-        state_handler.execute()
+    with patch.object(state_handler, "run_state_script", return_value=True) as mock_run:
+        state_handler.execute(123)
+        mock_run.assert_called_with(123)
         # Since the function logs info and doesn't return, we can only verify that no exceptions were raised.
 
 def test_execute_failure(state_handler):
-    with patch.object(state_handler, "run_state_script", return_value=False):
-        state_handler.execute()
+    with patch.object(state_handler, "run_state_script", return_value=False) as mock_run:
+        state_handler.execute(123)
+        mock_run.assert_called_with(123)
         # Again, since the function logs an error and doesn't return, we can only verify that no exceptions were raised.
 
 def test_file_read_success(tmpdir):
