@@ -36,7 +36,6 @@ DEFAULT_LOCK_FILE = (
 DEFAULT_TIMEOUT = 1  # Default timeout in seconds for acquiring the lock
 
 
-src_runtime = int(datetime.now().timestamp())
 
 # Initialize a logger for the script
 logger = logging.getLogger(__name__)
@@ -218,7 +217,7 @@ class StateHandler:
         self.logger = logging.getLogger(__name__)
         self.source_config_hash = source_config_hash
 
-    def run_state_script(self) -> bool:
+    def run_state_script(self, src_runtime) -> bool:
         """Execute the state fetching and storing.
 
         Returns:
@@ -253,9 +252,9 @@ class StateHandler:
             return False
 
 
-    def execute(self) -> None:
+    def execute(self, src_runtime) -> None:
         """Execute the state-related actions."""
-        success = self.run_state_script()
+        success = self.run_state_script(src_runtime)
         if not success:
             # This log is optional, but if you want a specific log here, you can keep it
             self.logger.error("State action execution failed.")
@@ -760,7 +759,7 @@ class ImageInfo:
     dst_image: str = ""  # Destination Airbyte image
 
 
-def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
+def parse_airbyte_arguments(src_runtime, default_config=None) -> argparse.Namespace:
     """Parse command-line arguments for the Airbyte Docker Runner."""
     default_config = default_config or {}
 
@@ -831,7 +830,7 @@ def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
 
     # Generate a job ID if not provided
     args.job = args.job or f"jobid-{src_runtime}"
-    
+
     # Set the log file path
     fh = logging.FileHandler(f"{args.output_path}/out.log", "w")
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -842,7 +841,7 @@ def parse_airbyte_arguments(default_config=None) -> argparse.Namespace:
     return args
 
 
-def handle_docker(args):
+def handle_docker(args, src_runtime):
     """Set up and return the Docker handler based on provided arguments."""
     logging.info("\U0001F680 Initiating your Airbridge data workflow...")
 
@@ -868,7 +867,7 @@ def handle_docker(args):
         return None
 
 
-def handle_state(args):
+def handle_state(args, src_runtime):
     """Execute the state handler based on provided arguments."""
     try:
         executor = StateHandler(
@@ -877,7 +876,7 @@ def handle_state(args):
             source_config_hash=args.source_config_hash,
             job_id=getattr(args, "job", None),
         )
-        executor.execute()
+        executor.execute(src_runtime)
     except Exception as error:
         logging.error(
             f"Error executing state script of type {type(error)}: {error}"
@@ -901,13 +900,14 @@ def main():
             config_manager = ConfigManager(
                 config_file=getattr(temp_args, "runtime_configs", None)
             )
-            args = parse_airbyte_arguments(default_config=config_manager.config)
+            src_runtime = int(datetime.now().timestamp())
+            args = parse_airbyte_arguments(src_runtime, default_config=config_manager.config)
             config_manager.update_from_args(args)
 
-            handler = handle_docker(args)
+            handler = handle_docker(args, src_runtime)
             if handler:
                 handler.execute()
-                handle_state(args)
+                handle_state(args, src_runtime)
                 handler.final_cleanup()
                 logging.info(
                     "Your Airbridge data workflow has completed successfully! \u2728 \U0001F370 \u2728"
